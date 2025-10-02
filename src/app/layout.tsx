@@ -73,6 +73,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <head>
+        <meta name="theme-color" content="#171717" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <StructuredData type="restaurant" />
       </head>
       <body className="min-h-screen bg-gray-dark">
