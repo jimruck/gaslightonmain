@@ -74,7 +74,7 @@ export function Footer() {
   return (
     <footer style={{ backgroundColor: '#171717' }}>
       <div className="container-custom py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Logo and Contact Info */}
           <div className="space-y-6">
             <Image
@@ -197,7 +197,7 @@ export function Footer() {
           </div>
 
           {/* Stay Connected */}
-          <div className="space-y-6">
+          <div className="space-y-6 min-w-0">
             <h3 className="text-xl font-serif font-semibold" style={{ color: '#f2f2f2' }}>Stay Connected</h3>
             <div className="flex space-x-4">
               <a 
@@ -223,11 +223,11 @@ export function Footer() {
               <p className="text-sm" style={{ color: '#f2f2f2' }}>
                 Subscribe to our newsletter for special events and seasonal menu updates.
               </p>
-              <form className="flex gap-2">
+              <form className="flex flex-col sm:flex-row gap-2 w-full">
                 <input
                   type="email"
                   placeholder="Your email"
-                  className="flex-1 px-4 py-2 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50"
+                  className="flex-1 px-4 py-2 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 min-w-0"
                   style={{ 
                     backgroundColor: '#262626',
                     border: '1px solid #404040'
@@ -235,7 +235,7 @@ export function Footer() {
                 />
                 <button 
                   type="submit" 
-                  className="px-6 py-2 font-semibold transition-all duration-300 hover:opacity-90"
+                  className="px-4 py-2 font-semibold transition-all duration-300 hover:opacity-90 whitespace-nowrap flex-shrink-0"
                   style={{ 
                     backgroundColor: '#CCBB98',
                     color: '#171717',
