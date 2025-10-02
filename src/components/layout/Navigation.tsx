@@ -18,7 +18,16 @@ export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-gray-dark border-b border-gray-medium">
+    <nav 
+      className="w-full bg-gray-dark border-b border-gray-medium"
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 9999
+      }}
+    >
       <div className="container-custom">
         <div className="flex items-center" style={{ height: '4rem' }}>
           {/* Logo */}

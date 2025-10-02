@@ -14,10 +14,6 @@ export default function HomePage() {
       <WinePairingEvent />
       <Testimonials />
       <NewsletterSignup />
-      {/* Test content to ensure scrolling */}
-      <div className="h-screen bg-gray-100 flex items-center justify-center">
-        <h2 className="text-2xl">Test scroll area</h2>
-      </div>
     </div>
   )
 }

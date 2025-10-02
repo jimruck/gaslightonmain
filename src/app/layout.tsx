@@ -79,7 +79,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen bg-gray-dark w-full">
         <Navigation />
-        <main className="pb-20 md:pb-0 w-full">
+        <main className="pt-16 pb-20 md:pb-0 w-full">
           {children}
         </main>
         <MobileBottomBar />
