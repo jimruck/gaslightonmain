@@ -6,12 +6,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
   
   body {
     @apply font-sans text-white antialiased bg-gray-dark;
+    overflow-x: hidden;
+    width: 100%;
+    margin: 0;
+    padding: 0;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -63,9 +72,17 @@
   
   .container-custom {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    width: 100%;
+    overflow-x: hidden;
   }
   
   .section-padding {
     @apply py-16 md:py-20 lg:py-24;
+  }
+  
+  .no-horizontal-scroll {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
   }
 }

@@ -77,13 +77,15 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <StructuredData type="restaurant" />
       </head>
-      <body className="min-h-screen bg-gray-dark">
-        <Navigation />
-        <main className="pb-20 md:pb-0">
-          {children}
-        </main>
-        <MobileBottomBar />
-        <Footer />
+      <body className="min-h-screen bg-gray-dark w-full overflow-x-hidden">
+        <div className="w-full min-h-screen flex flex-col">
+          <Navigation />
+          <main className="pb-20 md:pb-0 flex-1 w-full">
+            {children}
+          </main>
+          <MobileBottomBar />
+          <Footer />
+        </div>
       </body>
     </html>
   )
