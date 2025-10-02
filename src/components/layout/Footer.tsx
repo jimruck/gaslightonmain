@@ -1,61 +1,75 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { MapPin, Phone, Mail, Clock, Instagram, Facebook } from 'lucide-react'
 
 export function Footer() {
-  const currentDay = new Date().getDay() // 0 for Sunday, 1 for Monday, etc.
-  const hours = [
-    { day: 'Wed, Thurs', time: '4:00 PM - 8:00 PM', open: true, days: [3, 4] },
-    { day: 'Fri, Sat', time: '4:00 PM - 9:00 PM', open: true, days: [5, 6] },
-    { day: 'Sun', time: '11:00 AM - 3:00 PM', open: true, days: [0] },
-  ]
+  const [statusInfo, setStatusInfo] = useState({
+    isOpen: false,
+    status: 'Closed',
+    nextOpen: 'Opens today at 4:00 PM'
+  })
 
-  const getCurrentSchedule = () => {
-    const now = new Date()
-    const currentDay = now.getDay()
-    const currentHour = now.getHours()
-    const currentMinute = now.getMinutes()
-    const currentTime = currentHour * 60 + currentMinute
+  useEffect(() => {
+    const updateStatus = () => {
+      const now = new Date()
+      const currentDay = now.getDay()
+      const currentHour = now.getHours()
+      const currentMinute = now.getMinutes()
+      const currentTime = currentHour * 60 + currentMinute
 
-    // Check if we're currently open
-    for (const schedule of hours) {
-      if (schedule.days.includes(currentDay)) {
-        const [openTime, closeTime] = schedule.time.split(' - ')
-        const [openHour, openMin] = openTime.includes('AM') 
-          ? [parseInt(openTime.split(':')[0]), parseInt(openTime.split(':')[1].split(' ')[0])]
-          : [parseInt(openTime.split(':')[0]) + (openTime.includes('PM') ? 12 : 0), parseInt(openTime.split(':')[1].split(' ')[0])]
-        const [closeHour, closeMin] = closeTime.includes('AM')
-          ? [parseInt(closeTime.split(':')[0]), parseInt(closeTime.split(':')[1].split(' ')[0])]
-          : [parseInt(closeTime.split(':')[0]) + (closeTime.includes('PM') ? 12 : 0), parseInt(closeTime.split(':')[1].split(' ')[0])]
-        
-        const openTimeMinutes = openHour * 60 + openMin
-        const closeTimeMinutes = closeHour * 60 + closeMin
-        
-        if (currentTime >= openTimeMinutes && currentTime < closeTimeMinutes) {
-          return { isOpen: true, schedule, nextOpen: null }
-        }
-      }
-    }
+      const hours = [
+        { day: 'Wed, Thurs', time: '4:00 PM - 8:00 PM', open: true, days: [3, 4] },
+        { day: 'Fri, Sat', time: '4:00 PM - 9:00 PM', open: true, days: [5, 6] },
+        { day: 'Sun', time: '11:00 AM - 3:00 PM', open: true, days: [0] },
+      ]
 
-    // Find next opening
-    for (let i = 0; i < 7; i++) {
-      const checkDay = (currentDay + i) % 7
+      // Check if we're currently open
       for (const schedule of hours) {
-        if (schedule.days.includes(checkDay)) {
-          const isToday = i === 0
-          return { 
-            isOpen: false, 
-            schedule, 
-            nextOpen: isToday ? `Opens today at ${schedule.time.split(' - ')[0]}` : `Opens ${schedule.day} at ${schedule.time.split(' - ')[0]}`
+        if (schedule.days.includes(currentDay)) {
+          const [openTime, closeTime] = schedule.time.split(' - ')
+          const [openHour, openMin] = openTime.includes('AM') 
+            ? [parseInt(openTime.split(':')[0]), parseInt(openTime.split(':')[1].split(' ')[0])]
+            : [parseInt(openTime.split(':')[0]) + (openTime.includes('PM') ? 12 : 0), parseInt(openTime.split(':')[1].split(' ')[0])]
+          const [closeHour, closeMin] = closeTime.includes('AM')
+            ? [parseInt(closeTime.split(':')[0]), parseInt(closeTime.split(':')[1].split(' ')[0])]
+            : [parseInt(closeTime.split(':')[0]) + (closeTime.includes('PM') ? 12 : 0), parseInt(closeTime.split(':')[1].split(' ')[0])]
+          
+          const openTimeMinutes = openHour * 60 + openMin
+          const closeTimeMinutes = closeHour * 60 + closeMin
+          
+          if (currentTime >= openTimeMinutes && currentTime < closeTimeMinutes) {
+            setStatusInfo({ isOpen: true, status: 'Open', nextOpen: `Open until ${closeTime}` })
+            return
           }
         }
       }
+
+      // Find next opening
+      for (let i = 0; i < 7; i++) {
+        const checkDay = (currentDay + i) % 7
+        for (const schedule of hours) {
+          if (schedule.days.includes(checkDay)) {
+            const isToday = i === 0
+            setStatusInfo({ 
+              isOpen: false, 
+              status: 'Closed', 
+              nextOpen: isToday ? `Opens today at ${schedule.time.split(' - ')[0]}` : `Opens ${schedule.day} at ${schedule.time.split(' - ')[0]}`
+            })
+            return
+          }
+        }
+      }
+
+      setStatusInfo({ isOpen: false, status: 'Closed', nextOpen: 'Currently closed' })
     }
 
-    return { isOpen: false, schedule: null, nextOpen: 'Currently closed' }
-  }
-
-  const { isOpen, schedule, nextOpen } = getCurrentSchedule()
+    updateStatus()
+    const interval = setInterval(updateStatus, 60000) // Update every minute
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <footer style={{ backgroundColor: '#171717' }}>
@@ -108,13 +122,13 @@ export function Footer() {
               <div className="flex items-center space-x-3">
                 <div 
                   className="font-semibold"
-                  style={{ color: isOpen ? '#96F581' : '#f2f2f2' }}
+                  style={{ color: statusInfo.isOpen ? '#96F581' : '#f2f2f2' }}
                 >
-                  {isOpen ? 'Open' : 'Closed'}
+                  {statusInfo.status}
                 </div>
               </div>
               <div style={{ color: '#f2f2f2' }}>
-                {isOpen ? `Open until ${schedule?.time.split(' - ')[1]}` : nextOpen}
+                {statusInfo.nextOpen}
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between items-center">
@@ -170,7 +184,7 @@ export function Footer() {
                 className="block transition-colors duration-200 hover:opacity-80"
                 style={{ color: '#f2f2f2' }}
               >
-                Contact Us
+                Contact
               </Link>
               <Link 
                 href="/about" 
