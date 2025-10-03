@@ -17,7 +17,7 @@ const menuSections = [
         name: 'Seared Scallops',
         description: 'Pan-seared day boat scallops, cauliflower purée, pancetta, microgreens',
         price: '$16',
-        tags: ['Gluten-Free Available', 'Chef\'s Favorite']
+        tags: ['Gluten Free', 'Chef\'s Favorite']
       },
       {
         name: 'Burrata & Prosciutto',
@@ -29,13 +29,13 @@ const menuSections = [
         name: 'Duck Confit Flatbread',
         description: 'House-made flatbread, duck confit, caramelized onions, goat cheese, fig jam',
         price: '$15',
-        tags: ['House Special']
+        tags: ['Locally Sourced']
       },
       {
         name: 'Oysters Rockefeller',
         description: 'Fresh Blue Point oysters, creamed spinach, herbs, parmesan, pernod',
         price: '$18',
-        tags: ['Premium', 'Gluten-Free']
+        tags: ['Gluten Free', 'Locally Sourced']
       }
     ]
   },
@@ -47,19 +47,19 @@ const menuSections = [
         name: 'Gaslight Caesar',
         description: 'Romaine hearts, house-made croutons, aged parmesan, white anchovy, lemon',
         price: '$12',
-        tags: ['Vegetarian Available', 'Classic']
+        tags: ['Vegetarian Available']
       },
       {
         name: 'Seasonal Greens',
         description: 'Mixed local greens, roasted vegetables, goat cheese, candied walnuts, vinaigrette',
         price: '$11',
-        tags: ['Vegetarian', 'Gluten-Free', 'Seasonal']
+        tags: ['Vegetarian', 'Gluten Free', 'Seasonal', 'Locally Sourced']
       },
       {
         name: 'Lobster Bisque',
         description: 'Rich lobster bisque, sherry cream, fresh herbs, house-made crackers',
         price: '$9',
-        tags: ['Premium', 'Chef\'s Favorite']
+        tags: ['Chef\'s Favorite', 'Locally Sourced']
       }
     ]
   },
@@ -71,37 +71,37 @@ const menuSections = [
         name: 'Center-Cut Filet',
         description: 'Confit garlic whipped Yukon potatoes, haricot vert, red wine jus',
         price: '$42',
-        tags: ['Gluten-Free Available', 'Chef\'s Favorite']
+        tags: ['Featured Dish', 'Gluten Free', 'Chef\'s Favorite']
       },
       {
         name: 'Pan-Seared Salmon',
         description: 'Crispy-skinned salmon, herbed farro, chorizo, olive and roasted vegetables',
         price: '$28',
-        tags: ['Heart Healthy', 'Seasonal']
+        tags: ['Featured Dish', 'Seasonal', 'Locally Sourced']
       },
       {
         name: 'Lobster Ravioli',
         description: 'Knuckle and claw filled ravioli, caramelized onions, sherry cream sauce',
         price: '$34',
-        tags: ['Signature Dish', 'Premium']
+        tags: ['Featured Dish', 'Locally Sourced']
       },
       {
         name: 'Angus Strip Steak',
         description: '10 oz grilled CAB steak, frites, roasted garlic aioli',
         price: '$38',
-        tags: ['House Special', 'Gluten-Free Available']
+        tags: ['Featured Dish', 'Gluten Free', 'Locally Sourced']
       },
       {
         name: 'Roasted Half Chicken',
         description: 'Herb-roasted airline chicken, seasonal vegetables, natural jus',
         price: '$26',
-        tags: ['Gluten-Free', 'Farm Fresh']
+        tags: ['Gluten Free', 'Locally Sourced']
       },
       {
         name: 'Pork Tenderloin',
         description: 'Apple wood smoked tenderloin, sweet potato purée, Brussels sprouts, bacon',
         price: '$29',
-        tags: ['Seasonal', 'Local']
+        tags: ['Seasonal', 'Locally Sourced']
       }
     ]
   },
@@ -113,19 +113,19 @@ const menuSections = [
         name: 'Crème Brûlée',
         description: 'Classic vanilla custard with caramelized sugar crust, fresh berries',
         price: '$9',
-        tags: ['Classic', 'Gluten-Free']
+        tags: ['Gluten Free']
       },
       {
         name: 'Chocolate Tart',
         description: 'Dark chocolate ganache tart, raspberry coulis, whipped cream',
         price: '$10',
-        tags: ['House Made', 'Vegetarian']
+        tags: ['Vegetarian']
       },
       {
         name: 'Seasonal Fruit Cobbler',
         description: 'Fresh seasonal fruit cobbler, vanilla bean ice cream, oat crumble',
         price: '$8',
-        tags: ['Seasonal', 'Comfort Food']
+        tags: ['Seasonal', 'Locally Sourced']
       }
     ]
   }

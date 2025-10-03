@@ -89,10 +89,4 @@
     max-width: 100%;
   }
   
-  /* Ensure sticky navigation works */
-  nav[class*="sticky"] {
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 50 !important;
-  }
 }

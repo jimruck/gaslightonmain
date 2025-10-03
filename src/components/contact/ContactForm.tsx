@@ -194,10 +194,12 @@ export function ContactForm() {
             value={formData.topic}
             onChange={handleInputChange}
             required
-            className="w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            className={`w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${formData.topic ? 'text-gray-700' : 'text-gray-500'}`}
             style={{ border: '1px solid #e0e0e0' }}
           >
-            <option value="">Please select a topic</option>
+            <option value="" disabled hidden>
+              Please select a topic
+            </option>
             {topics.map((topic) => (
               <option key={topic} value={topic}>
                 {topic}
@@ -218,7 +220,7 @@ export function ContactForm() {
             value={formData.message}
             onChange={handleInputChange}
             required
-            className="w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            className="w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent placeholder-gray-500 text-gray-700"
             style={{ border: '1px solid #e0e0e0' }}
             placeholder="Please provide details about your inquiry..."
           />

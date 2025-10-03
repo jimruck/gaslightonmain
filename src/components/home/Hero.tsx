@@ -26,44 +26,79 @@ export function Hero() {
         { day: 'Sun', time: '11:00 AM - 3:00 PM', open: true, days: [0] },
       ]
 
-      // Check if we're currently open
-      for (const schedule of hours) {
-        if (schedule.days.includes(currentDay)) {
-          const [openTime, closeTime] = schedule.time.split(' - ')
-          const [openHour, openMin] = openTime.includes('AM') 
-            ? [parseInt(openTime.split(':')[0]), parseInt(openTime.split(':')[1].split(' ')[0])]
-            : [parseInt(openTime.split(':')[0]) + (openTime.includes('PM') ? 12 : 0), parseInt(openTime.split(':')[1].split(' ')[0])]
-          const [closeHour, closeMin] = closeTime.includes('AM')
-            ? [parseInt(closeTime.split(':')[0]), parseInt(closeTime.split(':')[1].split(' ')[0])]
-            : [parseInt(closeTime.split(':')[0]) + (closeTime.includes('PM') ? 12 : 0), parseInt(closeTime.split(':')[1].split(' ')[0])]
-          
-          const openTimeMinutes = openHour * 60 + openMin
-          const closeTimeMinutes = closeHour * 60 + closeMin
-          
-          if (currentTime >= openTimeMinutes && currentTime < closeTimeMinutes) {
-            setStatusInfo({ isOpen: true, status: 'Open', nextOpen: `Open until ${closeTime}` })
-            return
-          }
-        }
+      const openDays = new Set([0, 3, 4, 5, 6])
+      const weekdayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+      const getScheduleForDay = (day: number) => {
+        if (day === 0) return { openM: 11 * 60 + 0, closeM: 15 * 60 + 0, openLabel: '11:00 AM', closeLabel: '3:00 PM' }
+        if (day === 3 || day === 4) return { openM: 16 * 60 + 0, closeM: 20 * 60 + 0, openLabel: '4:00 PM', closeLabel: '8:00 PM' }
+        if (day === 5 || day === 6) return { openM: 16 * 60 + 0, closeM: 21 * 60 + 0, openLabel: '4:00 PM', closeLabel: '9:00 PM' }
+        return null
       }
 
-      // Find next opening
-      for (let i = 0; i < 7; i++) {
-        const checkDay = (currentDay + i) % 7
-        for (const schedule of hours) {
-          if (schedule.days.includes(checkDay)) {
-            const isToday = i === 0
-            setStatusInfo({ 
-              isOpen: false, 
-              status: 'Closed', 
-              nextOpen: isToday ? `Opens today at ${schedule.time.split(' - ')[0]}` : `Opens ${schedule.day} at ${schedule.time.split(' - ')[0]}`
-            })
-            return
+      const getNextOpenInfo = (startDay: number) => {
+        for (let i = 1; i <= 7; i++) {
+          const d = (startDay + i) % 7
+          if (openDays.has(d)) {
+            const sched = getScheduleForDay(d)!
+            return { day: d, openLabel: sched.openLabel }
           }
         }
+        // fallback to Wednesday
+        return { day: 3, openLabel: '4:00 PM' }
       }
 
-      setStatusInfo({ isOpen: false, status: 'Closed', nextOpen: 'Currently closed' })
+      // Determine today's schedule (if any)
+      const todaysSchedule = getScheduleForDay(currentDay)
+
+      // If today is an open day and current time is within hours => Open
+      if (todaysSchedule && currentTime >= todaysSchedule.openM && currentTime < todaysSchedule.closeM) {
+        setStatusInfo({ isOpen: true, status: 'Open', nextOpen: `Open until ${todaysSchedule.closeLabel}` })
+        return
+      }
+
+      // After close logic: from close time to 23:59 same day
+      if (todaysSchedule && currentTime >= todaysSchedule.closeM) {
+        // Special case: Sunday night until 11:59 PM Monday should say Opens Wednesday
+        if (currentDay === 0) {
+          const wed = getScheduleForDay(3)!
+          setStatusInfo({ isOpen: false, status: 'Closed', nextOpen: `Opens Wednesday at ${wed.openLabel}` })
+          return
+        }
+
+        const nextInfo = getNextOpenInfo(currentDay)
+        if ((currentDay + 1) % 7 === nextInfo.day) {
+          setStatusInfo({ isOpen: false, status: 'Closed', nextOpen: `Opens tomorrow at ${nextInfo.openLabel}` })
+        } else {
+          setStatusInfo({ isOpen: false, status: 'Closed', nextOpen: `Opens ${weekdayNames[nextInfo.day]} at ${nextInfo.openLabel}` })
+        }
+        return
+      }
+
+      // Before open today (if today is open)
+      if (todaysSchedule && currentTime < todaysSchedule.openM) {
+        setStatusInfo({ isOpen: false, status: 'Closed', nextOpen: `Opens today at ${todaysSchedule.openLabel}` })
+        return
+      }
+
+      // Closed days (Mon/Tue) and any other times
+      if (currentDay === 1) {
+        // Monday all day -> Opens Wednesday at 4:00 PM
+        const wed = getScheduleForDay(3)!
+        setStatusInfo({ isOpen: false, status: 'Closed', nextOpen: `Opens Wednesday at ${wed.openLabel}` })
+        return
+      }
+      if (currentDay === 2) {
+        // Tuesday all day -> Opens tomorrow (Wednesday)
+        const wed = getScheduleForDay(3)!
+        setStatusInfo({ isOpen: false, status: 'Closed', nextOpen: `Opens tomorrow at ${wed.openLabel}` })
+        return
+      }
+
+      // Fallback: compute next opening normally
+      const nextInfo = getNextOpenInfo(currentDay)
+      const isTomorrow = (currentDay + 1) % 7 === nextInfo.day
+      setStatusInfo({ isOpen: false, status: 'Closed', nextOpen: isTomorrow ? `Opens tomorrow at ${nextInfo.openLabel}` : `Opens ${weekdayNames[nextInfo.day]} at ${nextInfo.openLabel}` })
     }
 
     updateStatus()

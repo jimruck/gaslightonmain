@@ -102,16 +102,20 @@ export function EventsList() {
                   {event.description}
                 </p>
                 
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-serif font-semibold" style={{ color: '#212121' }}>
-                    {event.price}
-                  </span>
-                  <Link
-                    href={`/events/${event.id}`}
-                    className="btn-primary"
-                  >
-                    Reserve Your Spot
-                  </Link>
+                <div className="space-y-4">
+                  <div className="text-left">
+                    <span className="text-2xl font-serif font-semibold" style={{ color: '#212121' }}>
+                      {event.price}
+                    </span>
+                  </div>
+                  <div className="flex justify-center md:justify-end">
+                    <Link
+                      href={`/events/${event.id}`}
+                      className="btn-primary"
+                    >
+                      Reserve Your Spot
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
