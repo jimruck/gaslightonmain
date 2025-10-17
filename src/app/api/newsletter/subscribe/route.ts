@@ -34,9 +34,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Get environment variables
-    const apiKey = process.env.MAILCHIMP_API_KEY
-    const serverPrefix = process.env.MAILCHIMP_SERVER_PREFIX
-    const audienceId = process.env.MAILCHIMP_AUDIENCE_ID
+    const apiKey = process.env.MAILCHIMP_API_KEY?.trim()
+    const serverPrefix = process.env.MAILCHIMP_SERVER_PREFIX?.trim()
+    const audienceId = process.env.MAILCHIMP_AUDIENCE_ID?.trim()
 
     if (!apiKey || !serverPrefix || !audienceId) {
       console.error('Missing Mailchimp environment variables')

@@ -23,7 +23,7 @@ function getEnv(name: string): string {
   if (!value) {
     throw new Error(`Missing required environment variable: ${name}`)
   }
-  return value
+  return value.trim()
 }
 
 function normalizeRecord(record: AirtableRecord): MenuItem {
