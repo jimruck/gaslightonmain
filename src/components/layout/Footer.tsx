@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { MapPin, Phone, Mail, Clock, Instagram, Facebook } from 'lucide-react'
+import { NewsletterForm } from '@/components/shared/NewsletterForm'
 
 export function Footer() {
   const [statusInfo, setStatusInfo] = useState({
@@ -21,7 +22,7 @@ export function Footer() {
       const currentTime = currentHour * 60 + currentMinute
 
       const hours = [
-        { day: 'Wed, Thurs', time: '4:00 PM - 8:00 PM', open: true, days: [3, 4] },
+        { day: 'Wed, Thu', time: '4:00 PM - 8:00 PM', open: true, days: [3, 4] },
         { day: 'Fri, Sat', time: '4:00 PM - 9:00 PM', open: true, days: [5, 6] },
         { day: 'Sun', time: '11:00 AM - 3:00 PM', open: true, days: [0] },
       ]
@@ -158,7 +159,7 @@ export function Footer() {
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between items-center">
-                  <span style={{ color: '#f2f2f2' }}>Wed, Thurs</span>
+                  <span style={{ color: '#f2f2f2' }}>Wed, Thu</span>
                   <span style={{ color: '#f2f2f2' }}>4:00 PM - 8:00 PM</span>
                 </div>
                 <div className="flex justify-between items-center">
@@ -199,18 +200,18 @@ export function Footer() {
                 Events
               </Link>
               <Link 
-                href="#" 
+                href="/gallery" 
+                className="block transition-colors duration-200 hover:opacity-80"
+                style={{ color: '#f2f2f2' }}
+              >
+                Gallery
+              </Link>
+              <Link 
+                href="/private-dining" 
                 className="block transition-colors duration-200 hover:opacity-80"
                 style={{ color: '#f2f2f2' }}
               >
                 Private Dining
-              </Link>
-              <Link 
-                href="/contact" 
-                className="block transition-colors duration-200 hover:opacity-80"
-                style={{ color: '#f2f2f2' }}
-              >
-                Contact
               </Link>
               <Link 
                 href="/about" 
@@ -227,7 +228,7 @@ export function Footer() {
             <h3 className="text-xl font-serif font-semibold" style={{ color: '#f2f2f2' }}>Stay Connected</h3>
             <div className="flex space-x-4">
               <a 
-                href="https://instagram.com/gaslightonmain" 
+                href="https://instagram.com/thegaslightonmain/" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="transition-colors duration-200 hover:opacity-80" 
@@ -236,7 +237,7 @@ export function Footer() {
                 <Instagram className="h-6 w-6" style={{ color: '#c89212' }} />
               </a>
               <a 
-                href="https://facebook.com/gaslightonmain" 
+                href="https://facebook.com/people/The-Gaslight-on-Main/61576668796639" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="transition-colors duration-200 hover:opacity-80" 
@@ -249,28 +250,7 @@ export function Footer() {
               <p className="text-sm" style={{ color: '#f2f2f2' }}>
                 Subscribe to our newsletter for special events and seasonal menu updates.
               </p>
-              <form className="flex flex-col sm:flex-row gap-2 w-full">
-                <input
-                  type="email"
-                  placeholder="Your email"
-                  className="flex-1 px-4 py-2 rounded text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 min-w-0"
-                  style={{ 
-                    backgroundColor: '#262626',
-                    border: '1px solid #404040'
-                  }}
-                />
-                <button 
-                  type="submit" 
-                  className="px-4 py-2 font-semibold transition-all duration-300 hover:opacity-90 whitespace-nowrap flex-shrink-0"
-                  style={{ 
-                    backgroundColor: '#CCBB98',
-                    color: '#171717',
-                    borderRadius: '4px'
-                  }}
-                >
-                  Subscribe
-                </button>
-              </form>
+              <NewsletterForm variant="footer" />
             </div>
           </div>
         </div>

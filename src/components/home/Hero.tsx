@@ -108,14 +108,15 @@ export function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <Image
-          src="/brand/images/Firefly_Center-cut-filet-confit-garlic-whipped-Yukon-potatoes-haricot-vert-and-red-wine-ju-426440.jpg"
-          alt="Elegant plated dish at The Gaslight on Main"
-          fill
-          className="object-cover"
-          priority
-          sizes="100vw"
-        />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+        >
+          <source src="/brand/images/gaslight_hero.mp4" type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-black/50"></div>
       </div>
       
@@ -132,6 +133,7 @@ export function Hero() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="mb-8"
+            style={{ filter: 'drop-shadow(0 25px 25px rgba(0, 0, 0, 0.8))' }}
           >
             <Image
               src="/brand/logos/gaslight-logo-light.svg"
@@ -148,6 +150,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-xl md:text-2xl mb-8 text-white max-w-2xl mx-auto leading-relaxed"
+            style={{ textShadow: '0 4px 12px rgba(0, 0, 0, 0.8), 0 2px 4px rgba(0, 0, 0, 0.6)' }}
           >
             Experience elegant New American cuisine in the heart of Kernersville. 
             Fresh, seasonal ingredients meet sophisticated flavors in our warm, 
@@ -161,15 +164,15 @@ export function Hero() {
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8"
           >
             <Link 
-              href="/reservations" 
-              className="btn-primary text-lg px-8 py-4 w-full sm:w-auto"
+              href="/reservations"
+              className="btn-primary text-lg px-8 py-4 w-full sm:w-auto shadow-lg hover:shadow-2xl transition-shadow"
               style={{ lineHeight: '1.3rem' }}
             >
               Book a Table
             </Link>
             <Link 
               href="/menu" 
-              className="text-lg px-8 py-4 w-full sm:w-auto font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg border"
+              className="text-lg px-8 py-4 w-full sm:w-auto font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-2xl border"
               style={{
                 color: '#CCBB98',
                 backgroundColor: '#171717',
@@ -189,6 +192,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
             className="flex items-center justify-center space-x-3"
+            style={{ filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.7))' }}
           >
             <div className={`relative w-2 h-2 rounded-full shadow-lg ${
               statusInfo.isOpen 

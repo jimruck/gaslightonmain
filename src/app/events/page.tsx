@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function EventsPage() {
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-gray-dark">
       <EventsHero />
       <div className="container-custom section-padding">
         <EventsList />

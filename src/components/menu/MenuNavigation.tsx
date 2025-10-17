@@ -18,6 +18,7 @@ export function MenuNavigation({ sections }: MenuNavigationProps) {
   const [isSticky, setIsSticky] = useState(false)
   const [navHeight, setNavHeight] = useState(0)
   const navRef = useRef<HTMLDivElement | null>(null)
+  const buttonRefs = useRef<Map<string, HTMLButtonElement>>(new Map())
   const STICKY_OFFSET_PX = 64 // matches fixed header height
 
   useEffect(() => {
@@ -39,6 +40,18 @@ export function MenuNavigation({ sections }: MenuNavigationProps) {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [sections])
+
+  // Auto-scroll to active button
+  useEffect(() => {
+    const activeButton = buttonRefs.current.get(activeSection)
+    if (activeButton && navRef.current) {
+      activeButton.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center'
+      })
+    }
+  }, [activeSection])
 
   useEffect(() => {
     const onScrollForSticky = () => {
@@ -83,38 +96,46 @@ export function MenuNavigation({ sections }: MenuNavigationProps) {
 
   return (
     <div>
-      {/* Spacer to prevent layout shift when fixed */}
-      {isSticky && <div style={{ height: navHeight }} />}
       <nav
         ref={navRef}
-        className={clsx('w-full', isSticky ? 'fixed left-0 right-0 z-50' : '')}
-        style={{ backgroundColor: '#f2f2f2', top: isSticky ? STICKY_OFFSET_PX : undefined }}
+        className="fixed left-0 right-0 z-50 w-full bg-gray-medium"
+        style={{ 
+          top: '64px', // Position below the main navigation
+          height: '4rem'
+        }}
       >
-      <div className="w-full px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-center py-4">
-          <div className="flex flex-wrap gap-2 sm:gap-4 md:gap-6 lg:gap-8 w-full max-w-3xl justify-center">
-            {sections.map((section) => (
-              <button
-                key={section.id}
-                type="button"
-                onClick={() => scrollToSection(section.id)}
-                className={clsx(
-                  'px-3 sm:px-4 md:px-6 py-2 sm:py-3 text-xs sm:text-sm font-medium rounded-lg outline-none transition-[background-color,color,border] duration-300 ease-out',
-                  activeSection === section.id ? 'shadow-sm' : 'hover:opacity-90'
-                )}
-                style={{
-                  backgroundColor: activeSection === section.id ? '#ffffff' : '#f2f2f2',
-                  color: activeSection === section.id ? '#835f3a' : '#212121',
-                  border: activeSection === section.id ? '1px solid #f2f2f2' : '1px solid transparent',
-                  WebkitTapHighlightColor: 'rgba(0,0,0,0)'
-                }}
-              >
-                {section.title}
-              </button>
-            ))}
+        <div className="w-full h-full overflow-x-auto overflow-y-hidden scrollbar-hide">
+          <div className="flex items-center h-full px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center gap-4 md:gap-6 lg:gap-8 mx-auto" style={{ whiteSpace: 'nowrap' }}>
+              {sections.map((section) => (
+                <button
+                  key={section.id}
+                  ref={(el) => {
+                    if (el) {
+                      buttonRefs.current.set(section.id, el)
+                    } else {
+                      buttonRefs.current.delete(section.id)
+                    }
+                  }}
+                  type="button"
+                  onClick={() => scrollToSection(section.id)}
+                  className={clsx(
+                    'px-4 md:px-6 py-2 md:py-3 text-sm font-medium rounded-lg outline-none transition-[background-color,color,border] duration-300 ease-out flex-shrink-0',
+                    activeSection === section.id ? 'shadow-sm' : 'hover:opacity-80'
+                  )}
+                  style={{
+                    backgroundColor: activeSection === section.id ? '#3a3a3a' : 'transparent',
+                    color: activeSection === section.id ? '#CCBB98' : '#f2f2f2',
+                    border: activeSection === section.id ? '1px solid #CCBB98' : '1px solid transparent',
+                    WebkitTapHighlightColor: 'rgba(0,0,0,0)'
+                  }}
+                >
+                  {section.title}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
       </nav>
     </div>
   )

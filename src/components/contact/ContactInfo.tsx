@@ -77,15 +77,15 @@ export function ContactInfo() {
             <div>
               <h4 className="font-semibold mb-2" style={{ color: '#171717' }}>Hours</h4>
               <div className="space-y-1 text-sm" style={{ color: '#171717' }}>
-                <div className="flex justify-between items-center">
-                  <span>Wed, Thurs</span>
+                <div className="flex justify-between items-center gap-4">
+                  <span>Wed, Thu</span>
                   <span>4:00 PM - 8:00 PM</span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center gap-4">
                   <span>Fri, Sat</span>
                   <span>4:00 PM - 9:00 PM</span>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center gap-4">
                   <span>Sun</span>
                   <span>11:00 AM - 3:00 PM</span>
                 </div>
@@ -115,7 +115,7 @@ export function ContactInfo() {
           </a>
 
           <a
-            href="/events"
+            href="/private-dining"
             className="flex items-center space-x-3 p-4 rounded-lg hover:opacity-90 transition-opacity duration-200"
             style={{ backgroundColor: '#fdf6e3' }}
           >

@@ -39,10 +39,10 @@ export function MenuSection({ section }: MenuSectionProps) {
       className="scroll-mt-32"
     >
       <div className="text-center mb-12">
-        <h2 className="text-4xl font-serif font-semibold mb-4" style={{ color: '#262626' }}>
+        <h2 className="text-4xl font-serif font-semibold mb-4" style={{ color: '#CCBB98' }}>
           {section.title}
         </h2>
-            <div className="w-24 h-1 bg-primary-500 mx-auto rounded-full" />
+            <div className="w-24 h-1 mx-auto rounded-full" style={{ backgroundColor: '#CCBB98' }} />
       </div>
 
       <div className="space-y-8">
@@ -52,19 +52,18 @@ export function MenuSection({ section }: MenuSectionProps) {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="bg-white rounded-lg p-6 shadow-sm border hover:shadow-md transition-shadow duration-300"
-            style={{ borderColor: '#f2f2f2' }}
+            className="bg-gray-medium rounded-lg p-6 hover:shadow-md transition-shadow duration-300"
           >
             <div className="flex justify-between items-start mb-3">
-              <h3 className="text-xl font-serif font-semibold" style={{ color: '#262626' }}>
+              <h3 className="text-xl font-serif font-semibold" style={{ color: '#CCBB98' }}>
                 {item.name}
               </h3>
-              <span className="text-xl font-semibold text-primary-500 ml-4">
+              <span className="text-xl font-semibold ml-4" style={{ color: '#CCBB98' }}>
                 {item.price}
               </span>
             </div>
             
-            <p className="leading-relaxed mb-4" style={{ color: '#262626' }}>
+            <p className="leading-relaxed mb-4" style={{ color: '#f2f2f2' }}>
               {item.description}
             </p>
             

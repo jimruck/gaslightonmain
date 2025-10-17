@@ -102,7 +102,7 @@ export function AboutPageClient() {
           >
             <div className="bg-white rounded-xl shadow-sm p-6 sm:p-8 lg:p-12">
               <p className="text-base sm:text-lg leading-relaxed" style={{ color: '#171717' }}>
-              At The Gaslight on Main, our story begins with a simple belief: food and hospitality have the power to bring people together in meaningful ways. Owners Chef Daniel Zbiegien and his wife Dr. Rebecca Burke, a pediatric neurosurgeon, are proud to call Kernersville home. Like many families, their most cherished moments happen around a table—sharing food, laughter, and connection. The Gaslight on Main was born out of their desire to create a space where neighbors, friends, and visitors alike could experience that same sense of warmth and belonging.
+              At The Gaslight on Main, our story begins with a simple belief: food and hospitality have the power to bring people together in meaningful ways. Owners Chef Daniel Zbiegien and his wife Dr. Rebecca Burke, are proud to be a part of the Kernersville community. Like many families, their most cherished moments happen around a table—sharing food, laughter, and connection. The Gaslight on Main was born out of their desire to create a space where neighbors, friends, and visitors alike could experience that same sense of warmth and belonging.
               </p>
             </div>
           </motion.section>
@@ -121,10 +121,10 @@ export function AboutPageClient() {
                   Inspired by Charleston
                 </h2>
                 <p className="text-base sm:text-lg leading-relaxed mb-4" style={{ color: '#171717' }}>
-                  While traveling together in Charleston, South Carolina, Daniel and Rebecca were captivated by the city's historic charm, gracious hospitality, and flickering gaslights that lined its streets. On one evening walk beneath their glow, the spark for this restaurant was lit.
+                  While traveling together in Charleston, South Carolina, Daniel and Rebecca were captivated by the city's historic charm, gracious hospitality, and flickering gaslights that lined its streets. On an evening walk beneath their glow, the spark for this restaurant was lit.
                 </p>
                 <p className="text-base sm:text-lg leading-relaxed" style={{ color: '#171717' }}>
-                  The gaslight that now stands above our entrance is more than a detail—it's a symbol of welcome. Just as Charleston's gaslights once guided their way, ours serves as a beacon for all who step inside, inviting you into an atmosphere of comfort and unforgettable experiences.
+                  Just as Charleston's gaslights once guided their way, the gaslight that stands above the restaurant's entrance serves as a beacon for all who step inside, inviting each guest into an atmosphere of comfort and unforgettable experiences.
                 </p>
               </div>
               <div className="order-1 lg:order-2">
@@ -175,7 +175,7 @@ export function AboutPageClient() {
             </div>
           </motion.section>
 
-          {/* Art That Speaks */}
+          {/* Art That Speaks
           <motion.section
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -201,45 +201,8 @@ export function AboutPageClient() {
                 </a>
               </div>
             </div>
-          </motion.section>
+          </motion.section> */}
 
-          {/* Photo Gallery */}
-          <motion.section
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="mb-12 sm:mb-16"
-          >
-            <h2 className="text-2xl sm:text-3xl font-serif font-semibold mb-6 sm:mb-8 text-center" style={{ color: '#b5956d' }}>
-              A Visual Journey
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {storyImages.map((image, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="relative h-48 sm:h-56 lg:h-64 rounded-xl overflow-hidden cursor-pointer group"
-                  onClick={() => openGallery(index)}
-                >
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
-                  <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
-                    <p className="text-white text-sm font-medium">{image.caption}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.section>
 
           {/* Local Gathering Place */}
           <motion.section

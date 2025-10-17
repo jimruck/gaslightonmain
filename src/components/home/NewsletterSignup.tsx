@@ -3,23 +3,19 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import { NewsletterForm } from '@/components/shared/NewsletterForm'
 
 export function NewsletterSignup() {
-  const [email, setEmail] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [message, setMessage] = useState<string | null>(null)
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    setIsLoading(false)
+  const handleSuccess = (successMessage: string) => {
+    setMessage(successMessage)
     setIsSubmitted(true)
-    setEmail('')
     setTimeout(() => {
       setIsSubmitted(false)
-    }, 3000)
+      setMessage(null)
+    }, 5000)
   }
 
   return (
@@ -52,35 +48,16 @@ export function NewsletterSignup() {
           </p>
 
           {!isSubmitted ? (
-            <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-              <div className="flex flex-col sm:flex-row gap-4">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Email address"
-                  className="flex-1 px-6 py-4 rounded-md border-0 text-gray-dark placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary"
-                  required
-                />
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="btn-primary px-8 py-4 whitespace-nowrap"
-                  style={{ lineHeight: '1.3rem' }}
-                >
-                  {isLoading ? 'Signing Up...' : 'Sign me up'}
-                </button>
-              </div>
-            </form>
+            <NewsletterForm variant="hero" onSuccess={handleSuccess} />
           ) : (
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.3 }}
-              className="bg-primary text-gray-dark px-6 py-4 rounded-md max-w-md mx-auto"
+              className="bg-primary text-gray-dark px-6 py-4 rounded-md max-w-lg mx-auto"
             >
               <span className="text-lg font-semibold">
-                Thank you for subscribing!
+                {message || 'Thank you for subscribing!'}
               </span>
             </motion.div>
           )}

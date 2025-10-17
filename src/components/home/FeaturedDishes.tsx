@@ -3,35 +3,83 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
 
-const dishes = [
-  {
-    name: 'Center-Cut Filet',
-    description: 'Confit garlic whipped Yukon potatoes, haricot vert, and red wine jus',
-    price: '$42',
-    image: '/brand/images/Firefly_Center-cut-filet-confit-garlic-whipped-Yukon-potatoes-haricot-vert-and-red-wine-ju-426440.jpg',
-  },
-  {
-    name: 'Pan-Seared Salmon',
-    description: 'Crispy-skinned salmon, herbed farro, chorizo, olive and roasted vegetables',
-    price: '$28',
-    image: '/brand/images/Firefly__Pan-Seared-Salmon-Crispy-skinned-salmon-herbed-farro-chorizo-olive-and-roasted-406070.jpg',
-  },
-  {
-    name: 'Lobster Ravioli',
-    description: 'Knuckle and claw filled ravioli with caramelized onions, sherry cream sauce',
-    price: '$34',
-    image: '/brand/images/Firefly__Lobster-Ravioli-Knuckle-and-Claw-filled-ravioli-with-caramelized-onions-sherry-and-406070.jpg',
-  },
-  {
-    name: 'Angus Strip Steak',
-    description: '10 oz grilled CAB steak served with frites, roasted garlic aioli',
-    price: '$38',
-    image: '/brand/images/Firefly_10-oz-Angus-Strip-Steak-Fritts-Grilled-CAB-steak-served-with-fries-roasted-garlic-960176.jpg',
-  },
-]
+interface FeaturedDish {
+  id: string
+  name: string
+  description: string
+  price: string
+  photo?: string
+}
 
 export function FeaturedDishes() {
+  const [dishes, setDishes] = useState<FeaturedDish[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let isMounted = true
+    async function load() {
+      try {
+        setLoading(true)
+        const res = await fetch('/api/menu?featured=1', { cache: 'default' })
+        if (!res.ok) {
+          throw new Error(`Failed to load featured dishes (${res.status})`)
+        }
+        const data = await res.json()
+        if (isMounted) {
+          setDishes(data.items || [])
+        }
+      } catch (err: any) {
+        if (isMounted) setError(err?.message || 'Failed to load featured dishes')
+      } finally {
+        if (isMounted) setLoading(false)
+      }
+    }
+    load()
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
+  if (loading) {
+    return (
+      <section className="py-20 bg-gray-dark">
+        <div className="container-custom">
+          <div className="text-center mb-16">
+            <div className="h-12 bg-gray-600 rounded mx-auto mb-4 w-80 animate-pulse" />
+            <div className="h-6 bg-gray-600 rounded mx-auto w-96 animate-pulse" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="bg-gray-medium rounded-lg overflow-hidden animate-pulse">
+                <div className="h-64 bg-gray-600" />
+                <div className="p-6">
+                  <div className="h-6 bg-gray-600 rounded mb-3" />
+                  <div className="h-4 bg-gray-600 rounded" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  if (error) {
+    return (
+      <section className="py-20 bg-gray-dark">
+        <div className="container-custom">
+          <div className="text-center text-red-400">{error}</div>
+        </div>
+      </section>
+    )
+  }
+
+  if (!dishes.length) {
+    return null // Don't show section if no featured dishes
+  }
   return (
     <section className="py-20 bg-gray-dark">
       <div className="container-custom">
@@ -60,7 +108,7 @@ export function FeaturedDishes() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           {dishes.map((dish, index) => (
             <motion.div
-              key={dish.name}
+              key={dish.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -68,13 +116,19 @@ export function FeaturedDishes() {
             >
               <div className="bg-gray-medium rounded-lg overflow-hidden">
                 <div className="relative h-64 overflow-hidden">
-                  <Image
-                    src={dish.image}
-                    alt={dish.name}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
+                  {dish.photo ? (
+                    <Image
+                      src={dish.photo}
+                      alt={dish.name}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-600 flex items-center justify-center text-white">
+                      No Image
+                    </div>
+                  )}
                 </div>
                 <div className="p-6">
                   <div className="flex justify-between items-start mb-3">

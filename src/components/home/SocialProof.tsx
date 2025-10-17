@@ -6,14 +6,14 @@ import { motion } from 'framer-motion'
 const reviews = [
   {
     rating: 5,
-    text: "Exceptional dining experience! The pan-seared salmon was perfectly cooked and the service was impeccable. The atmosphere strikes the perfect balance between elegant and welcoming.",
-    author: "Sarah M.",
+    text: "This is truly a treasure and the food itself should make it a true success! One of the best meals I've had in my life hands down. I've eaten all over the US and world.",
+    author: "T. Thomas",
     source: "Google Reviews"
   },
   {
     rating: 5,
-    text: "The Gaslight has become our go-to spot for special occasions. The wine selection is outstanding and the chef's attention to detail shows in every dish.",
-    author: "Michael R.",
+    text: "We had such a wonderful dining experience! From the moment I walked in, the staff was warm and welcoming, making me feel comfortable right away.",
+    author: "Janet C.",
     source: "Yelp"
   }
 ]
@@ -25,7 +25,7 @@ const pressQuotes = [
     date: "September 2024"
   },
   {
-    quote: "A hidden gem that deserves recognition. The seasonal menu and expertly crafted cocktails make this a destination worth the drive.",
+    quote: "I would make the drive anytime. These are some of the most enjoyable meals my wife and friends and I have experienced in quite some time.",
     source: "Carolina Dining Guide",
     date: "August 2024"
   }

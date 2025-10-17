@@ -1,7 +1,7 @@
 import { Hero } from '@/components/home/Hero'
 import { OurStory } from '@/components/home/OurStory'
 import { FeaturedDishes } from '@/components/home/FeaturedDishes'
-import { WinePairingEvent } from '@/components/home/WinePairingEvent'
+import { NextEvent } from '@/components/home/NextEvent'
 import { Testimonials } from '@/components/home/Testimonials'
 import { NewsletterSignup } from '@/components/home/NewsletterSignup'
 
@@ -11,7 +11,7 @@ export default function HomePage() {
       <Hero />
       <OurStory />
       <FeaturedDishes />
-      <WinePairingEvent />
+      <NextEvent />
       <Testimonials />
       <NewsletterSignup />
     </div>

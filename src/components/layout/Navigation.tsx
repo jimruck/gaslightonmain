@@ -3,15 +3,15 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Menu, X, Phone } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const navigation = [
   { name: 'Menu', href: '/menu' },
   { name: 'Our Story', href: '/about' },
   { name: 'Events', href: '/events' },
-  { name: 'Private Dining', href: '#' }, // Leave blank for now
-  { name: 'Contact', href: '/contact' },
+  { name: 'Gallery', href: '/gallery' },
+  { name: 'Private Dining', href: '/private-dining' },
 ]
 
 export function Navigation() {
@@ -59,10 +59,9 @@ export function Navigation() {
           <div className="hidden lg:flex items-center space-x-6 ml-auto">
             <a
               href="tel:+13364974025"
-              className="flex items-center space-x-2 text-white hover:text-primary transition-colors duration-300"
+              className="text-white hover:text-primary transition-colors duration-300 font-medium"
             >
-              <Phone className="h-4 w-4" />
-              <span className="font-medium">(336) 497-4025</span>
+              (336) 497-4025
             </a>
             <Link href="/reservations" className="btn-primary">
               Book a Table
@@ -105,10 +104,9 @@ export function Navigation() {
                 <div className="flex flex-col space-y-4 pt-4 border-t border-gray-500">
                   <a
                     href="tel:+13364974025"
-                    className="flex items-center space-x-2 text-white hover:text-primary transition-colors duration-300"
+                    className="text-white hover:text-primary transition-colors duration-300 font-medium"
                   >
-                    <Phone className="h-4 w-4" />
-                    <span className="font-medium">(336) 497-4025</span>
+                    (336) 497-4025
                   </a>
                   <Link 
                     href="/reservations" 

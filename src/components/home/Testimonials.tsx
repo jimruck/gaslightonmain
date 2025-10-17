@@ -7,30 +7,30 @@ import { motion } from 'framer-motion'
 const reviews = [
   {
     rating: 5,
-    text: "Exceptional dining experience! The pan-seared salmon was perfectly cooked and the service was impeccable. The atmosphere strikes the perfect balance between elegant and welcoming.",
-    author: "Sarah M.",
-    source: "Google Reviews",
+    text: "This is truly a treasure and the food itself should make it a true success! One of the best meals I've had in my life hands down. I've eaten all over the US and world.",
+    author: "T. Thomas",
+    source: "Google Reviews"
   },
   {
     rating: 5,
-    text: "The Gaslight has become our go-to spot for special occasions. The wine selection is outstanding and the chef's attention to detail shows in every dish.",
-    author: "Michael R.", 
-    source: "Yelp",
+    text: "We had such a wonderful dining experience! From the moment I walked in, the staff was warm and welcoming, making me feel comfortable right away.",
+    author: "Janet C.",
+    source: "Yelp"
   },
 ]
 
 const pressQuotes = [
   {
     quote: "The Gaslight on Main elevates Kernersville's dining scene with sophisticated New American cuisine that rivals the best restaurants in Winston-Salem.",
-    source: "Triad City Beat",
-    date: "September 2024",
-    logo: "/brand/logos/TriadCityBeat.png",
+    source: "Greensboro News & Record",
+    date: "June 2025",
+    logo: "/brand/images/news-record-logo.png",
   },
   {
-    quote: "A hidden gem that deserves recognition. The seasonal menu and expertly crafted cocktails make this a destination worth the drive.",
-    source: "Our State Magazine",
-    date: "August 2024",
-    logo: "/brand/logos/Our_State_Magazine_logo.png",
+    quote: "These are some of the most enjoyable meals my wife and friends and I have experienced in quite some time. The Gaslight may be new, but it debuts in the top echelon of Triad restaurants. I will be coming here as often as my schedule and weight allow. ",
+    source: "John Batchelor, Yes! Weekly",
+    date: "September 2025",
+    logo: "/brand/images/yes-weekly-logo.png",
   },
 ]
 
@@ -57,8 +57,8 @@ export function Testimonials() {
                 <Star key={i} className="h-6 w-6 fill-yellow-400 text-yellow-400" />
               ))}
             </div>
-            <span className="text-xl font-semibold" style={{ color: '#f2f2f2' }}>4.9</span>
-            <span style={{ color: '#f2f2f2' }}>(127 reviews)</span>
+            <span className="text-xl font-semibold" style={{ color: '#f2f2f2' }}>4.8</span>
+            <span style={{ color: '#f2f2f2' }}>(166 reviews)</span>
           </div>
         </motion.div>
 
