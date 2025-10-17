@@ -82,6 +82,8 @@ function normalizeRecord(record: AirtableRecord): EventItem {
     capacity = `${guests} guests`
   } else if (typeof guests === 'string') {
     capacity = guests.toLowerCase() === 'all guests' ? 'All guests' : `${guests} guests`
+  } else {
+    capacity = undefined
   }
   const price: string | undefined =
     typeof priceValue === 'number' ? `$${priceValue}` : typeof priceValue === 'string' ? priceValue : undefined
