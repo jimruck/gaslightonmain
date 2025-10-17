@@ -34,7 +34,7 @@ function normalizeRecord(record: AirtableRecord): EventItem {
   const title: string = f['Event Name'] || f.Title || f.name || ''
   const description: string | undefined = f['Description'] || f.description || undefined
   const priceValue: number | string | undefined = f['Price'] ?? f.Price ?? undefined
-  const guests: number | undefined = f['Guests'] ?? f.Guests ?? undefined
+  const guests: number | string | undefined = f['Guests'] ?? f.Guests ?? undefined
   const photo = Array.isArray(f['Photo']) ? f['Photo'][0] : undefined
   const rawStart: string | undefined = f['Start Date / Time'] || f['Start'] || undefined
   const rawEnd: string | undefined = f['End Date / Time'] || f['End'] || undefined
