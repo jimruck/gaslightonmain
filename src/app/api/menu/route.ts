@@ -80,6 +80,9 @@ export async function GET(request: NextRequest) {
       url.searchParams.set('sort[0][direction]', 'asc')
     }
 
+    console.log('Menu API - URL:', url.toString())
+    console.log('Menu API - API Key:', apiKey ? 'SET' : 'NOT SET')
+    
     const res = await fetch(url.toString(), {
       headers: {
         Authorization: `Bearer ${apiKey}`,
@@ -89,6 +92,9 @@ export async function GET(request: NextRequest) {
       // @ts-ignore - Next.js runtime option
       next: { revalidate: 300 },
     })
+    
+    console.log('Menu API - Response status:', res.status)
+    console.log('Menu API - Response headers:', Object.fromEntries(res.headers.entries()))
 
     if (!res.ok) {
       const text = await res.text()
