@@ -55,7 +55,7 @@ export function MenuPageClient() {
           
           if (allMenuItems.length > 0) {
             const allMeals = allMenuItems.flatMap((item: MenuItem) => item.meal || [])
-            const uniqueMeals = [...new Set(allMeals)]
+            const uniqueMeals = Array.from(new Set(allMeals))
             console.log('Available meals in data:', uniqueMeals)
             console.log('Sample item:', allMenuItems[0])
           } else {
