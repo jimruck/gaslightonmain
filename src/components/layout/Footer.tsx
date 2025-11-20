@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { MapPin, Phone, Mail, Clock, Instagram, Facebook } from 'lucide-react'
+import { MapPin, Phone, Mail, Clock, Instagram, Facebook, CheckCircle, XCircle } from 'lucide-react'
 import { NewsletterForm } from '@/components/shared/NewsletterForm'
 
 export function Footer() {
@@ -21,73 +21,88 @@ export function Footer() {
       const currentMinute = now.getMinutes()
       const currentTime = currentHour * 60 + currentMinute
 
-      const hours = [
-        { day: 'Wed, Thu', time: '4:00 PM - 8:00 PM', open: true, days: [3, 4] },
-        { day: 'Fri, Sat', time: '4:00 PM - 9:00 PM', open: true, days: [5, 6] },
-        { day: 'Sun', time: '11:00 AM - 3:00 PM', open: true, days: [0] },
-      ]
-      const openDays = new Set([0, 3, 4, 5, 6])
       const weekdayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
       const getScheduleForDay = (day: number) => {
-        if (day === 0) return { openM: 11 * 60 + 0, closeM: 15 * 60 + 0, openLabel: '11:00 AM', closeLabel: '3:00 PM' }
-        if (day === 3 || day === 4) return { openM: 16 * 60 + 0, closeM: 20 * 60 + 0, openLabel: '4:00 PM', closeLabel: '8:00 PM' }
-        if (day === 5 || day === 6) return { openM: 16 * 60 + 0, closeM: 21 * 60 + 0, openLabel: '4:00 PM', closeLabel: '9:00 PM' }
+        // Returns array of periods for the day, or null if closed
+        if (day === 0) return [{ openM: 11 * 60 + 0, closeM: 15 * 60 + 0, openLabel: '11:00 AM', closeLabel: '3:00 PM' }] // Sunday - Brunch
+        if (day === 1 || day === 2) return null // Monday, Tuesday - Closed
+        if (day === 3) return [{ openM: 16 * 60 + 0, closeM: 20 * 60 + 0, openLabel: '4:00 PM', closeLabel: '8:00 PM' }] // Wednesday - Dinner
+        if (day === 4) return [
+          { openM: 11 * 60 + 30, closeM: 15 * 60 + 0, openLabel: '11:30 AM', closeLabel: '3:00 PM' }, // Thursday - Lunch
+          { openM: 16 * 60 + 0, closeM: 20 * 60 + 0, openLabel: '4:00 PM', closeLabel: '8:00 PM' } // Thursday - Dinner
+        ]
+        if (day === 5 || day === 6) return [
+          { openM: 11 * 60 + 30, closeM: 15 * 60 + 0, openLabel: '11:30 AM', closeLabel: '3:00 PM' }, // Friday/Saturday - Lunch
+          { openM: 16 * 60 + 0, closeM: 21 * 60 + 0, openLabel: '4:00 PM', closeLabel: '9:00 PM' } // Friday/Saturday - Dinner
+        ]
         return null
       }
 
       const getNextOpenInfo = (startDay: number) => {
         for (let i = 1; i <= 7; i++) {
           const d = (startDay + i) % 7
-          if (openDays.has(d)) {
-            const sched = getScheduleForDay(d)!
-            return { day: d, openLabel: sched.openLabel }
+          const sched = getScheduleForDay(d)
+          if (sched && sched.length > 0) {
+            return { day: d, openLabel: sched[0].openLabel }
           }
         }
         return { day: 3, openLabel: '4:00 PM' }
       }
 
       const todaysSchedule = getScheduleForDay(currentDay)
-      if (todaysSchedule && currentTime >= todaysSchedule.openM && currentTime < todaysSchedule.closeM) {
-        setStatusInfo({ isOpen: true, status: 'Open', nextOpen: `Open until ${todaysSchedule.closeLabel}` })
-        return
-      }
-
-      // After close today until 11:59 PM
-      if (todaysSchedule && currentTime >= todaysSchedule.closeM) {
-        if (currentDay === 0) {
-          const wed = getScheduleForDay(3)!
-          setStatusInfo({ isOpen: false, status: 'Closed', nextOpen: `Opens Wednesday at ${wed.openLabel}` })
+      
+      // Check if we're in any open period today
+      if (todaysSchedule && Array.isArray(todaysSchedule)) {
+        for (const period of todaysSchedule) {
+          if (currentTime >= period.openM && currentTime < period.closeM) {
+            setStatusInfo({ isOpen: true, status: 'Open', nextOpen: `Open until ${period.closeLabel}` })
+            return
+          }
+        }
+        
+        // Check if we're between periods (e.g., between lunch and dinner)
+        if (todaysSchedule.length > 1) {
+          const firstPeriod = todaysSchedule[0]
+          const secondPeriod = todaysSchedule[1]
+          if (currentTime >= firstPeriod.closeM && currentTime < secondPeriod.openM) {
+            setStatusInfo({ isOpen: false, status: 'Closed', nextOpen: `Reopens today at ${secondPeriod.openLabel}` })
+            return
+          }
+        }
+        
+        // After last period closes today
+        const lastPeriod = todaysSchedule[todaysSchedule.length - 1]
+        if (currentTime >= lastPeriod.closeM) {
+          const nextInfo = getNextOpenInfo(currentDay)
+          if ((currentDay + 1) % 7 === nextInfo.day) {
+            setStatusInfo({ isOpen: false, status: 'Closed', nextOpen: `Opens tomorrow at ${nextInfo.openLabel}` })
+          } else {
+            setStatusInfo({ isOpen: false, status: 'Closed', nextOpen: `Opens ${weekdayNames[nextInfo.day]} at ${nextInfo.openLabel}` })
+          }
           return
         }
-        const nextInfo = getNextOpenInfo(currentDay)
-        if ((currentDay + 1) % 7 === nextInfo.day) {
-          setStatusInfo({ isOpen: false, status: 'Closed', nextOpen: `Opens tomorrow at ${nextInfo.openLabel}` })
-        } else {
-          setStatusInfo({ isOpen: false, status: 'Closed', nextOpen: `Opens ${weekdayNames[nextInfo.day]} at ${nextInfo.openLabel}` })
+        
+        // Before first period opens today
+        const firstPeriod = todaysSchedule[0]
+        if (currentTime < firstPeriod.openM) {
+          setStatusInfo({ isOpen: false, status: 'Closed', nextOpen: `Opens today at ${firstPeriod.openLabel}` })
+          return
         }
-        return
-      }
-
-      // Before open today
-      if (todaysSchedule && currentTime < todaysSchedule.openM) {
-        setStatusInfo({ isOpen: false, status: 'Closed', nextOpen: `Opens today at ${todaysSchedule.openLabel}` })
-        return
       }
 
       // Monday and Tuesday handling
-      if (currentDay === 1) {
+      if (currentDay === 1 || currentDay === 2) {
         const wed = getScheduleForDay(3)!
-        setStatusInfo({ isOpen: false, status: 'Closed', nextOpen: `Opens Wednesday at ${wed.openLabel}` })
-        return
-      }
-      if (currentDay === 2) {
-        const wed = getScheduleForDay(3)!
-        setStatusInfo({ isOpen: false, status: 'Closed', nextOpen: `Opens tomorrow at ${wed.openLabel}` })
+        if (currentDay === 1) {
+          setStatusInfo({ isOpen: false, status: 'Closed', nextOpen: `Opens Wednesday at ${wed[0].openLabel}` })
+        } else {
+          setStatusInfo({ isOpen: false, status: 'Closed', nextOpen: `Opens tomorrow at ${wed[0].openLabel}` })
+        }
         return
       }
 
-      // Fallback
+      // Fallback: compute next opening normally
       const nextInfo = getNextOpenInfo(currentDay)
       const isTomorrow = (currentDay + 1) % 7 === nextInfo.day
       setStatusInfo({ isOpen: false, status: 'Closed', nextOpen: isTomorrow ? `Opens tomorrow at ${nextInfo.openLabel}` : `Opens ${weekdayNames[nextInfo.day]} at ${nextInfo.openLabel}` })
@@ -145,31 +160,50 @@ export function Footer() {
           {/* Hours */}
           <div className="space-y-6">
             <h3 className="text-xl font-serif font-semibold" style={{ color: '#f2f2f2' }}>Hours</h3>
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <div 
-                  className="font-semibold"
+            
+            {/* Status Section */}
+            <div className="space-y-3">
+              <div className="flex items-center space-x-2">
+                {statusInfo.isOpen ? (
+                  <CheckCircle className="h-4 w-4" style={{ color: '#96F581' }} />
+                ) : (
+                  <XCircle className="h-4 w-4" style={{ color: '#a0a0a0' }} />
+                )}
+                <span 
+                  className="font-semibold text-sm uppercase tracking-wide"
                   style={{ color: statusInfo.isOpen ? '#96F581' : '#f2f2f2' }}
                 >
                   {statusInfo.status}
-                </div>
+                </span>
               </div>
-              <div style={{ color: '#f2f2f2' }}>
+              <p className="text-sm leading-relaxed" style={{ color: '#a0a0a0' }}>
                 {statusInfo.nextOpen}
+              </p>
+            </div>
+
+            {/* Weekly Schedule */}
+            <div className="space-y-2.5">
+              <div className="flex items-start justify-between">
+                <span className="font-medium text-sm" style={{ color: '#f2f2f2' }}>Wednesday</span>
+                <span className="text-sm text-right" style={{ color: '#d1d1d1' }}>4:00 PM - 8:00 PM</span>
               </div>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between items-center">
-                  <span style={{ color: '#f2f2f2' }}>Wed, Thu</span>
-                  <span style={{ color: '#f2f2f2' }}>4:00 PM - 8:00 PM</span>
+              <div className="flex items-start justify-between">
+                <span className="font-medium text-sm" style={{ color: '#f2f2f2' }}>Thursday</span>
+                <div className="flex flex-col items-end">
+                  <span className="text-sm" style={{ color: '#d1d1d1' }}>11:30 AM - 3:00 PM</span>
+                  <span className="text-sm" style={{ color: '#d1d1d1' }}>4:00 PM - 8:00 PM</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span style={{ color: '#f2f2f2' }}>Fri, Sat</span>
-                  <span style={{ color: '#f2f2f2' }}>4:00 PM - 9:00 PM</span>
+              </div>
+              <div className="flex items-start justify-between">
+                <span className="font-medium text-sm" style={{ color: '#f2f2f2' }}>Friday, Saturday</span>
+                <div className="flex flex-col items-end">
+                  <span className="text-sm" style={{ color: '#d1d1d1' }}>11:30 AM - 3:00 PM</span>
+                  <span className="text-sm" style={{ color: '#d1d1d1' }}>4:00 PM - 9:00 PM</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span style={{ color: '#f2f2f2' }}>Sun</span>
-                  <span style={{ color: '#f2f2f2' }}>11:00 AM - 3:00 PM</span>
-                </div>
+              </div>
+              <div className="flex items-start justify-between">
+                <span className="font-medium text-sm" style={{ color: '#f2f2f2' }}>Sunday</span>
+                <span className="text-sm text-right" style={{ color: '#d1d1d1' }}>11:00 AM - 3:00 PM</span>
               </div>
             </div>
           </div>
@@ -214,7 +248,7 @@ export function Footer() {
                 Private Dining
               </Link>
               <Link 
-                href="/about" 
+                href="/our-story" 
                 className="block transition-colors duration-200 hover:opacity-80"
                 style={{ color: '#f2f2f2' }}
               >

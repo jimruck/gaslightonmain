@@ -20,7 +20,7 @@ const reviews = [
 
 const pressQuotes = [
   {
-    quote: "The Gaslight on Main elevates Kernersville's dining scene with sophisticated New American cuisine that rivals the best restaurants in Winston-Salem.",
+    quote: "The Gaslight on Main elevates Kernersville's dining scene with approachable elegance that rivals the best restaurants in Winston-Salem or Greensboro.",
     source: "Triad City Beat",
     date: "September 2024"
   },

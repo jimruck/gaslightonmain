@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 const navigation = [
   { name: 'Menu', href: '/menu' },
-  { name: 'Our Story', href: '/about' },
+  { name: 'Our Story', href: '/our-story' },
   { name: 'Events', href: '/events' },
   { name: 'Gallery', href: '/gallery' },
   { name: 'Private Dining', href: '/private-dining' },

@@ -6,44 +6,64 @@ import { useState } from 'react'
 
 const galleryImages = [
   {
-    src: '/brand/images/IMG_1222.jpg',
+    src: '/brand/images/5.jpg',
     alt: 'Main dining area',
     title: 'Main Dining Area',
   },
   {
-    src: '/brand/images/os1.jpg',
-    alt: 'Interior ambiance',
-    title: 'Elegant Ambiance',
+    src: '/brand/images/1.jpg',
+    alt: 'Main dining area',
+    title: 'Main Dining Area',
   },
   {
-    src: '/brand/images/os2.jpg',
-    alt: 'Bar area',
-    title: 'Bar & Lounge',
+    src: '/brand/images/3.jpg',
+    alt: 'Salle',
+    title: 'Salle Seating Area',
   },
   {
-    src: '/brand/images/os3.jpg',
-    alt: 'Seating arrangement',
+    src: '/brand/images/212-1.jpg',
+    alt: 'Intimate Seating',
     title: 'Intimate Seating',
   },
   {
-    src: '/brand/images/os4.jpg',
-    alt: 'Restaurant interior',
-    title: 'Interior Details',
+    src: '/brand/images/236.jpg',
+    alt: 'Unreasonable Hospitality',
+    title: 'Unreasonable Hospitality',
   },
   {
-    src: '/brand/images/os5.jpg',
-    alt: 'Dining space',
-    title: 'Dining Experience',
+    src: '/brand/images/217.jpg',
+    alt: 'Intimate Seating',
+    title: 'Intimate Seating',
   },
   {
-    src: '/brand/images/charleston.jpg',
+    src: '/brand/images/152-1.jpg',
+    alt: 'Salle Bar Seating',
+    title: 'Salle Bar Seating',
+  },
+  {
+    src: '/brand/images/126.jpg',
+    alt: 'Private Dining Area',
+    title: 'Private Dining Area',
+  },
+  {
+    src: '/brand/images/111.jpg',
+    alt: 'Private Dining Area',
+    title: 'Private Dining Area',
+  },
+  {
+    src: '/brand/images/29.jpg',
     alt: 'Restaurant exterior',
-    title: 'Exterior View',
+    title: 'The Gaslight Seasonal Salad',
   },
   {
-    src: '/brand/images/maja_1500xx501-500-0-94.jpg',
+    src: '/brand/images/21.jpg',
     alt: 'Restaurant atmosphere',
-    title: 'Atmosphere',
+    title: 'Cider Braised Pork Shoulder',
+  },
+  {
+    src: '/brand/images/200.jpg',
+    alt: 'Restaurant atmosphere',
+    title: 'French Onion Dumplings',
   },
 ]
 

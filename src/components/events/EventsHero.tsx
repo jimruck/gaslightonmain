@@ -8,7 +8,7 @@ export function EventsHero() {
     <section className="relative h-96 flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
-          src="/brand/images/Firefly__Creme-Brulee-Classic-vanilla-custard-with-caramelized-sugar-crust._.-white-plate-c-315311.jpg"
+          src="/brand/images/230.jpg"
           alt="Special event at The Gaslight on Main"
           fill
           className="object-cover"

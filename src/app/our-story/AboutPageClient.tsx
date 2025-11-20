@@ -153,7 +153,7 @@ export function AboutPageClient() {
               <div>
                 <div className="relative h-64 sm:h-80 lg:h-96 rounded-xl overflow-hidden">
                   <Image
-                    src="/brand/images/Firefly__Pan-Seared-Salmon-Crispy-skinned-salmon-herbed-farro-chorizo-olive-and-roasted-406070.jpg"
+                    src="/brand/images/38.jpg"
                     alt="Pan-seared salmon dish"
                     fill
                     className="object-cover"
@@ -248,7 +248,7 @@ export function AboutPageClient() {
               >
                 <div className="relative h-64 sm:h-80">
                   <Image
-                    src="/brand/images/IMG_1222.jpg"
+                    src="/brand/images/dan_headshot.jpg"
                     alt="Daniel Zbiegien - Head Chef and Owner"
                     fill
                     className="object-cover"
@@ -263,16 +263,25 @@ export function AboutPageClient() {
                     Head Chef and Owner
                   </p>
                   <p className="text-sm sm:text-base leading-relaxed" style={{ color: '#171717' }}>
-                    My culinary journey began over two decades ago, rooted in a deep appreciation for the transformative power of food. From my early days working in kitchens across the country, I discovered that cooking is not merely about technique—it's about creating experiences that bring people together and tell stories through every carefully crafted dish.
+                    Chef Daniel Zbiegien brings more than a decade of professional kitchen expertise to The Gaslight on Main, shaped by acclaimed restaurants and award-winning culinary programs across the United States and New Zealand.
                   </p>
                   <p className="text-sm sm:text-base leading-relaxed mt-4" style={{ color: '#171717' }}>
-                    Throughout my career, I've had the privilege of working alongside exceptional chefs and learning from diverse culinary traditions. This journey led me to develop a philosophy centered on New American cuisine that celebrates both innovation and tradition, always with the highest respect for seasonal, locally sourced ingredients.
+                    Daniel began his formative training in Boston at Bistro du Midi, where he worked under Le Bernardin-trained Chef Robert Sisca. He quickly rose from Line Cook to Executive Sous Chef, mastering the stations of Garde Manger, Entremet, Meats, and Fish, contributing to menu development, and gaining deep experience in high-volume, fine-dining operations.
                   </p>
                   <p className="text-sm sm:text-base leading-relaxed mt-4" style={{ color: '#171717' }}>
-                    Today, at The Gaslight on Main, I am honored to work alongside my incredible team, including General Manager Maja Popovic, whose dedication to exceptional service perfectly complements our culinary vision. Together, we are committed to creating not just memorable meals, but lasting connections within our Kernersville community.
+                    Seeking new inspiration and global perspective, Daniel traveled to New Zealand, where he cooked in some of the country's most celebrated kitchens. He earned the Beef and Lamb Excellence Award while leading a kitchen team at Pilkingtons, and held chef roles at both Clooney—one of New Zealand's premier three-hatted restaurants—and The Grill by Sean Connolly, awarded New Zealand's Best Restaurant. These experiences sharpened his commitment to exceptional ingredients, meticulous technique, and a modern expression of hospitality.
                   </p>
                   <p className="text-sm sm:text-base leading-relaxed mt-4" style={{ color: '#171717' }}>
-                    For me, every dish that leaves our kitchen carries with it our commitment to excellence, creativity, and the belief that great food has the power to create moments of joy and connection that extend far beyond the dining room.
+                    Daniel later brought that refined sensibility to The Farmhouse at Veritas, an East Coast destination dining program in Virginia wine country. As Head Chef, he created weekly changing four-course tasting menus and seasonal breakfast offerings, helping the restaurant achieve nationwide recognition—named Best Restaurant at a Winery on the East Coast and Fourth in the Country by USA Today.
+                  </p>
+                  <p className="text-sm sm:text-base leading-relaxed mt-4" style={{ color: '#171717' }}>
+                    Today, as Chef-Owner of The Gaslight on Main, Daniel channels all of these influences into thoughtfully crafted menus rooted in seasonality, comfort, and elevated technique. His cooking reflects his belief that hospitality is personal: that food should tell a story, celebrate the moment, and bring people together.
+                  </p>
+                  <p className="text-sm sm:text-base leading-relaxed mt-4" style={{ color: '#171717' }}>
+                    When he isn't leading the kitchen, Daniel enjoys time with his family, collaborating with local farmers, and continually exploring the endless world of culinary craft.
+                  </p>
+                  <p className="text-sm sm:text-base leading-relaxed mt-4" style={{ color: '#171717' }}>
+                    At The Gaslight on Main, Chef Daniel's mission is to create a vibrant neighborhood dining experience—where Kernersville gathers, celebrates, and feels right at home.
                   </p>
                 </div>
               </motion.div>
@@ -287,7 +296,7 @@ export function AboutPageClient() {
               >
                 <div className="relative h-64 sm:h-80">
                   <Image
-                    src="/brand/images/maja_1500xx501-500-0-94.jpg"
+                    src="/brand/images/maja_headshot.jpg"
                     alt="Maja Popovic - General Manager"
                     fill
                     className="object-cover"

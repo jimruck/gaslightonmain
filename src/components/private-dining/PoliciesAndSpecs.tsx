@@ -37,18 +37,18 @@ const specifications = [
   {
     icon: Music,
     title: 'Atmosphere',
-    description: 'Private sound system available',
+    description: 'Audio/visual and décor options',
     detail: 'Create the perfect ambiance for your event'
   }
 ]
 
 const policies = [
-  'A non-refundable deposit of 25% is required to secure your reservation',
-  'Final guest count must be confirmed 72 hours prior to event',
-  'Menu selections should be finalized one week before your event',
+  'A non-refundable deposit is required to secure your reservation',
+  'Final guest count must be confirmed prior to event',
+  'Menu selections should be finalized your event',
   'Decorations are welcome with prior approval',
   'We accommodate dietary restrictions and allergies with advance notice',
-  'Private dining events are subject to a 20% service charge'
+  'Private dining events are subject to a service charge'
 ]
 
 export function PoliciesAndSpecs() {
@@ -67,7 +67,7 @@ export function PoliciesAndSpecs() {
             Event Details
           </h2>
           <p className="text-xl max-w-2xl mx-auto" style={{ color: '#f2f2f2' }}>
-            Everything you need to know to plan your perfect event
+          The Gaslight on Main will provide a detailed review of all event logistics and guidelines prior to securing your reservation to ensure a seamless and memorable experience for you and your guests. This includes, but is not limited to:
           </p>
         </motion.div>
 

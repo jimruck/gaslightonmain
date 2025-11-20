@@ -12,6 +12,7 @@ interface MenuItem {
   price: string
   tags: string[]
   course: string
+  meal?: string[]
   photo?: string
   featured?: boolean
 }
@@ -26,7 +27,10 @@ export function MenuPageClient() {
   const [sections, setSections] = useState<MenuSectionData[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [selectedMeal, setSelectedMeal] = useState<string>('Dinner')
+  const [allItems, setAllItems] = useState<MenuItem[]>([])
 
+  // Load menu data once on mount
   useEffect(() => {
     let isMounted = true
     async function load() {
@@ -38,24 +42,27 @@ export function MenuPageClient() {
         }
         const data = await res.json()
         if (isMounted) {
-          // Define the fixed order for menu sections
-          const sectionOrder = [
-            'Appetizers & Small Plates',
-            'Salads & Soups', 
-            'Main Courses',
-            'Desserts'
-          ]
+          // Store all items for filtering by meal
+          const allMenuItems = data.items || []
           
-          // Convert sections object to array in the specified order
-          const sectionsArray = sectionOrder
-            .filter(course => data.sections && data.sections[course])
-            .map(course => ({
-              id: course.toLowerCase().replace(/\s+/g, '-'),
-              title: course,
-              items: data.sections[course] as MenuItem[]
-            }))
+          // Debug: Log meal values to help troubleshoot
+          console.log('Menu API response:', {
+            hasItems: !!data.items,
+            itemsCount: allMenuItems.length,
+            hasSections: !!data.sections,
+            sectionsCount: data.sections ? Object.keys(data.sections).length : 0
+          })
           
-          setSections(sectionsArray)
+          if (allMenuItems.length > 0) {
+            const allMeals = allMenuItems.flatMap((item: MenuItem) => item.meal || [])
+            const uniqueMeals = [...new Set(allMeals)]
+            console.log('Available meals in data:', uniqueMeals)
+            console.log('Sample item:', allMenuItems[0])
+          } else {
+            console.warn('No items found in API response. Data structure:', Object.keys(data))
+          }
+          
+          setAllItems(allMenuItems)
         }
       } catch (err: any) {
         if (isMounted) setError(err?.message || 'Failed to load menu')
@@ -68,6 +75,71 @@ export function MenuPageClient() {
       isMounted = false
     }
   }, [])
+  
+  // Update sections when meal changes or items are loaded
+  useEffect(() => {
+    if (allItems.length === 0) return
+    
+    // Filter items by selected meal and group by course
+    const filteredItems = allItems.filter((item: MenuItem) => {
+      // If meal is not set or empty array, include it in all meals (backward compatibility)
+      if (!item.meal || item.meal.length === 0) {
+        return true
+      }
+      // Check if the selected meal is included in the item's meal array (case-insensitive)
+      return item.meal.some(meal => meal.trim().toLowerCase() === selectedMeal.toLowerCase())
+    })
+    
+    // Group filtered items by course
+    const sectionsByCourse = filteredItems.reduce((acc: Record<string, MenuItem[]>, item: MenuItem) => {
+      const course = item.course || 'Other'
+      if (!acc[course]) {
+        acc[course] = []
+      }
+      acc[course].push(item)
+      return acc
+    }, {} as Record<string, MenuItem[]>)
+    
+    // Define the fixed order for menu sections
+    const sectionOrder = [
+      'Appetizers & Small Plates',
+      'Salads & Soups', 
+      'Main Courses',
+      'Desserts'
+    ]
+    
+    // Convert sections object to array in the specified order
+    let sectionsArray = sectionOrder
+      .filter(course => sectionsByCourse[course] && sectionsByCourse[course].length > 0)
+      .map(course => ({
+        id: course.toLowerCase().replace(/\s+/g, '-'),
+        title: course,
+        items: sectionsByCourse[course]
+      }))
+    
+    // If no items match the selected meal, show all items (fallback)
+    if (sectionsArray.length === 0 && allItems.length > 0) {
+      console.warn(`No items found for meal "${selectedMeal}". Showing all items as fallback.`)
+      const allSectionsByCourse = allItems.reduce((acc: Record<string, MenuItem[]>, item: MenuItem) => {
+        const course = item.course || 'Other'
+        if (!acc[course]) {
+          acc[course] = []
+        }
+        acc[course].push(item)
+        return acc
+      }, {} as Record<string, MenuItem[]>)
+      
+      sectionsArray = sectionOrder
+        .filter(course => allSectionsByCourse[course] && allSectionsByCourse[course].length > 0)
+        .map(course => ({
+          id: course.toLowerCase().replace(/\s+/g, '-'),
+          title: course,
+          items: allSectionsByCourse[course]
+        }))
+    }
+    
+    setSections(sectionsArray)
+  }, [selectedMeal, allItems])
 
   if (loading) {
     return (
@@ -110,7 +182,11 @@ export function MenuPageClient() {
   return (
     <div>
       <MenuHero />
-      <MenuNavigation sections={sections} />
+      <MenuNavigation 
+        selectedMeal={selectedMeal} 
+        onMealChange={setSelectedMeal}
+        sections={sections} 
+      />
       
       {/* Spacer to account for fixed navigation */}
       {/* <div style={{ height: '120px' }} /> */}

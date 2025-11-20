@@ -9,7 +9,7 @@ export function MenuHero() {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/brand/images/Firefly__Lobster-Ravioli-Knuckle-and-Claw-filled-ravioli-with-caramelized-onions-sherry-and-406070.jpg"
+          src="/brand/images/12.jpg"
           alt="Elegant plated dish from our menu"
           fill
           className="object-cover"

@@ -1,6 +1,6 @@
 'use client'
 
-import { AlertCircle, Users, Clock, Accessibility } from 'lucide-react'
+import { AlertCircle, Users, Clock, Accessibility, Cake } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 export function ReservationPolicy() {
@@ -24,9 +24,10 @@ export function ReservationPolicy() {
             <h4 className="text-base md:text-lg font-semibold" style={{ color: '#171717' }}>Cancellation Policy</h4>
           </div>
           <div className="space-y-2" style={{ color: '#171717' }}>
-            <p className="text-sm md:text-base">• Reservations may be cancelled up to 2 hours before your scheduled time</p>
-            <p className="text-sm md:text-base">• No-shows or late cancellations may incur a $25 per person fee</p>
-            <p className="text-sm md:text-base">• We hold tables for 15 minutes past reservation time</p>
+            <p className="text-sm md:text-base">• Reservations may be cancelled up to 24 hours before your scheduled time</p>
+            <p className="text-sm md:text-base">• No-shows or late cancellations may incur a $15 per person fee</p>
+            <p className="text-sm md:text-base">• We hold tables for 10 minutes past reservation time. Please call if you are running late.</p>
+            <p className="text-sm md:text-base">• We accept a limited number of walk-ins based on availability.</p>
           </div>
         </div>
 
@@ -37,13 +38,13 @@ export function ReservationPolicy() {
             <h4 className="text-base md:text-lg font-semibold" style={{ color: '#171717' }}>Party Size Guidelines</h4>
           </div>
           <div className="space-y-2" style={{ color: '#171717' }}>
-            <p className="text-sm md:text-base">• Parties of 6 or more require a phone reservation</p>
-            <p className="text-sm md:text-base">• Large parties may be subject to a gratuity policy</p>
-            <p className="text-sm md:text-base">• Private dining options available for groups of 12+</p>
+            <p className="text-sm md:text-base">• Online reservations are accepted for parties up to 6 guests.</p>
+            <p className="text-sm md:text-base">• Parties of 7 or more require a phone reservation</p>
+            <p className="text-sm md:text-base">• Private dining options available for groups of 12-30</p>
           </div>
         </div>
 
-        {/* Timing Information */}
+        {/* Timing Information
         <div className="space-y-3">
           <div className="flex items-center space-x-3">
             <Clock className="h-5 w-5 md:h-6 md:w-6" style={{ color: '#835F3A' }} />
@@ -54,6 +55,18 @@ export function ReservationPolicy() {
             <p className="text-sm md:text-base">• Kitchen closes 30 minutes before restaurant closing</p>
             <p className="text-sm md:text-base">• Last seating is 1 hour before closing time</p>
           </div>
+        </div> */}
+
+        {/* Special Occasions */}
+        <div className="space-y-3">
+          <div className="flex items-center space-x-3">
+            <Cake className="h-5 w-5 md:h-6 md:w-6" style={{ color: '#835F3A' }} />
+            <h4 className="text-base md:text-lg font-semibold" style={{ color: '#171717' }}>Special Occasions</h4>
+          </div>
+          <div className="space-y-2" style={{ color: '#171717' }}>
+            <p className="text-sm md:text-base">• Let us know when making your reservation and we'll do our best to help make your evening extra memorable</p>
+            <p className="text-sm md:text-base">• No outside food or beverages is allowed. However, we do offer a $15 corkage fee per bottle of wine not featured on our list and a $2 per guest cake-cutting and plating fee for celebration cakes.</p>
+          </div>
         </div>
 
         {/* Accessibility */}
@@ -63,26 +76,12 @@ export function ReservationPolicy() {
             <h4 className="text-base md:text-lg font-semibold" style={{ color: '#171717' }}>Accessibility</h4>
           </div>
           <div className="space-y-2" style={{ color: '#171717' }}>
-            <p className="text-sm md:text-base">• Our restaurant is fully wheelchair accessible</p>
-            <p className="text-sm md:text-base">• We accommodate dietary restrictions with advance notice</p>
-            <p className="text-sm md:text-base">• Service animals are welcome</p>
+            <p className="text-sm md:text-base">• We accommodate accessibility needs and dietary restrictions with advance notice</p>
           </div>
         </div>
       </div>
 
       <div className="mt-6 pt-4" style={{ borderTop: '1px solid #f2f2f2' }}>
-        <div className="rounded-lg p-4 md:p-6" style={{ backgroundColor: '#fdf6e3' }}>
-          <h4 className="text-base md:text-lg font-semibold mb-3" style={{ color: '#171717' }}>
-            Special Occasions
-          </h4>
-          <p className="leading-relaxed text-sm md:text-base" style={{ color: '#171717' }}>
-            Celebrating an anniversary, birthday, or special milestone? Let us know when making 
-            your reservation and we'll help make your evening extra memorable with special touches 
-            and personalized service.
-          </p>
-        </div>
-      </div>
-
       <div className="mt-4 text-center">
         <p className="text-xs md:text-sm" style={{ color: '#171717' }}>
           For questions about our policies or to make special arrangements, 
@@ -95,6 +94,7 @@ export function ReservationPolicy() {
             (336) 497-4025
           </a>
         </p>
+      </div>
       </div>
     </motion.div>
   )

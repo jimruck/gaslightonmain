@@ -22,7 +22,7 @@ export function NewsletterSignup() {
     <section className="relative py-20 overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
-          src="/brand/images/Firefly_Center-cut-filet-confit-garlic-whipped-Yukon-potatoes-haricot-vert-and-red-wine-ju-426440.jpg"
+          src="/brand/images/29.jpg"
           alt="Elegant dining background"
           fill
           className="object-cover"

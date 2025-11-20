@@ -8,7 +8,7 @@ export function PrivateDiningHero() {
     <section className="relative h-96 flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
-          src="/brand/images/privatedining_thumb.jpg"
+          src="/brand/images/128.jpg"
           alt="Private Dining at The Gaslight on Main"
           fill
           className="object-cover"

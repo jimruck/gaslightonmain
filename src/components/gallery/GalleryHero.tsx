@@ -8,7 +8,7 @@ export function GalleryHero() {
     <section className="relative h-96 flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
-          src="/brand/images/IMG_1222.jpg"
+          src="/brand/images/1.jpg"
           alt="The Gaslight on Main interior"
           fill
           className="object-cover"

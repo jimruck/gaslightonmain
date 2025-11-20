@@ -21,10 +21,10 @@ const reviews = [
 
 const pressQuotes = [
   {
-    quote: "The Gaslight on Main elevates Kernersville's dining scene with sophisticated New American cuisine that rivals the best restaurants in Winston-Salem.",
-    source: "Greensboro News & Record",
-    date: "June 2025",
-    logo: "/brand/images/news-record-logo.png",
+    quote: "The Gaslight on Main dishes out New American cuisine in an elegant setting. Expect spectacular starters like the French Onion Dumplings and entrees like Sweet Corn Risotto.",
+    source: "The Go To Winston-Salem",
+    date: "July 2025",
+    logo: "/brand/images/goto-winston-logo.png",
   },
   {
     quote: "These are some of the most enjoyable meals my wife and friends and I have experienced in quite some time. The Gaslight may be new, but it debuts in the top echelon of Triad restaurants. I will be coming here as often as my schedule and weight allow. ",

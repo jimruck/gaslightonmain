@@ -28,13 +28,22 @@ export function LiveHours() {
       const currentTime = hour * 60 + minute // Convert to minutes
 
       const schedule = {
-        0: null, // Sunday - Closed
-        1: { open: 17 * 60, close: 21 * 60 }, // Monday 5-9 PM
-        2: { open: 17 * 60, close: 21 * 60 }, // Tuesday 5-9 PM
-        3: { open: 17 * 60, close: 21 * 60 }, // Wednesday 5-9 PM
-        4: { open: 17 * 60, close: 21 * 60 }, // Thursday 5-9 PM
-        5: { open: 17 * 60, close: 22 * 60 }, // Friday 5-10 PM
-        6: { open: 17 * 60, close: 22 * 60 }, // Saturday 5-10 PM
+        0: [{ open: 11 * 60, close: 15 * 60 }], // Sunday - Brunch
+        1: null, // Monday - Closed
+        2: null, // Tuesday - Closed
+        3: [{ open: 16 * 60, close: 20 * 60 }], // Wednesday - Dinner
+        4: [
+          { open: 11 * 60 + 30, close: 15 * 60 }, // Thursday - Lunch
+          { open: 16 * 60, close: 20 * 60 } // Thursday - Dinner
+        ],
+        5: [
+          { open: 11 * 60 + 30, close: 15 * 60 }, // Friday - Lunch
+          { open: 16 * 60, close: 21 * 60 } // Friday - Dinner
+        ],
+        6: [
+          { open: 11 * 60 + 30, close: 15 * 60 }, // Saturday - Lunch
+          { open: 16 * 60, close: 21 * 60 } // Saturday - Dinner
+        ],
       }
 
       const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -44,29 +53,48 @@ export function LiveHours() {
       let status = 'Closed'
       let nextChange = ''
 
-      if (todaySchedule && currentTime >= todaySchedule.open && currentTime < todaySchedule.close) {
-        isOpen = true
-        status = 'Open Now'
-        const closeHour = Math.floor(todaySchedule.close / 60)
-        const closeMinute = todaySchedule.close % 60
-        const closeTime = `${closeHour > 12 ? closeHour - 12 : closeHour}:${closeMinute.toString().padStart(2, '0')} ${closeHour >= 12 ? 'PM' : 'AM'}`
-        nextChange = `Closes at ${closeTime}`
-      } else {
+      // Check if we're in any open period today
+      if (todaySchedule && Array.isArray(todaySchedule)) {
+        for (const period of todaySchedule) {
+          if (currentTime >= period.open && currentTime < period.close) {
+            isOpen = true
+            status = 'Open Now'
+            const closeHour = Math.floor(period.close / 60)
+            const closeMinute = period.close % 60
+            const closeTime = `${closeHour > 12 ? closeHour - 12 : closeHour}:${closeMinute.toString().padStart(2, '0')} ${closeHour >= 12 ? 'PM' : 'AM'}`
+            nextChange = `Closes at ${closeTime}`
+            break
+          }
+        }
+        
+        // If not open now, check if we're between periods
+        if (!isOpen && todaySchedule.length > 1) {
+          const firstPeriod = todaySchedule[0]
+          const secondPeriod = todaySchedule[1]
+          if (currentTime >= firstPeriod.close && currentTime < secondPeriod.open) {
+            const openHour = Math.floor(secondPeriod.open / 60)
+            const openMinute = secondPeriod.open % 60
+            const openTime = `${openHour > 12 ? openHour - 12 : openHour}:${openMinute.toString().padStart(2, '0')} ${openHour >= 12 ? 'PM' : 'AM'}`
+            nextChange = `Reopens today at ${openTime}`
+          }
+        }
+      }
+      
+      if (!isOpen && !nextChange) {
         // Find next opening
         let nextOpenDay = (day + 1) % 7
         let daysUntilOpen = 1
 
         while (daysUntilOpen <= 7) {
           const nextDaySchedule = schedule[nextOpenDay as keyof typeof schedule]
-          if (nextDaySchedule) {
-            const openHour = Math.floor(nextDaySchedule.open / 60)
-            const openMinute = nextDaySchedule.open % 60
+          if (nextDaySchedule && Array.isArray(nextDaySchedule)) {
+            const firstPeriod = nextDaySchedule[0]
+            const openHour = Math.floor(firstPeriod.open / 60)
+            const openMinute = firstPeriod.open % 60
             const openTime = `${openHour > 12 ? openHour - 12 : openHour}:${openMinute.toString().padStart(2, '0')} ${openHour >= 12 ? 'PM' : 'AM'}`
             
             if (daysUntilOpen === 1) {
               nextChange = `Opens tomorrow at ${openTime}`
-            } else if (daysUntilOpen === 2) {
-              nextChange = `Opens ${dayNames[nextOpenDay]} at ${openTime}`
             } else {
               nextChange = `Opens ${dayNames[nextOpenDay]} at ${openTime}`
             }

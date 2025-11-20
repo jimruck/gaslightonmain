@@ -12,6 +12,7 @@ type MenuItem = {
   price: string
   tags: string[]
   course: string
+  meal?: string[]
   photo?: string
   featured?: boolean
 }
@@ -33,6 +34,14 @@ function normalizeRecord(record: AirtableRecord): MenuItem {
   const name: string = f['Item Name'] || f.name || ''
   const description: string = f['Description'] || f.description || ''
   const course: string = f['Course'] || f.course || ''
+  // Handle meal - could be string or array (multi-select)
+  // Try multiple possible field names
+  const rawMeal = f['Meal'] || f['Meal Type'] || f['Meal Time'] || f['Service'] || f.meal || ''
+  const meal: string[] = Array.isArray(rawMeal) 
+    ? rawMeal.map((m: any) => typeof m === 'string' ? m.trim() : String(m).trim()).filter(Boolean)
+    : typeof rawMeal === 'string' && rawMeal.trim()
+      ? [rawMeal.trim()]
+      : []
   const priceValue: number | string | undefined = f['Price'] ?? f.Price ?? undefined
   const photo = Array.isArray(f['Photo']) ? f['Photo'][0] : undefined
   
@@ -60,6 +69,7 @@ function normalizeRecord(record: AirtableRecord): MenuItem {
     price,
     tags,
     course,
+    meal,
     photo: photo?.thumbnails?.large?.url || photo?.thumbnails?.full?.url || photo?.url || undefined,
     featured,
   }

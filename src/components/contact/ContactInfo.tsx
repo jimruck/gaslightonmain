@@ -77,17 +77,27 @@ export function ContactInfo() {
             <div>
               <h4 className="font-semibold mb-2" style={{ color: '#171717' }}>Hours</h4>
               <div className="space-y-1 text-sm" style={{ color: '#171717' }}>
-                <div className="flex justify-between items-center gap-4">
-                  <span>Wed, Thu</span>
-                  <span>4:00 PM - 8:00 PM</span>
+                <div className="flex justify-between items-start gap-4">
+                  <span>Wed</span>
+                  <span className="text-right">4:00 PM - 8:00 PM</span>
                 </div>
-                <div className="flex justify-between items-center gap-4">
+                <div className="flex justify-between items-start gap-4">
+                  <span>Thu</span>
+                  <div className="flex flex-col items-end">
+                    <span>11:30 AM - 3:00 PM</span>
+                    <span>4:00 PM - 8:00 PM</span>
+                  </div>
+                </div>
+                <div className="flex justify-between items-start gap-4">
                   <span>Fri, Sat</span>
-                  <span>4:00 PM - 9:00 PM</span>
+                  <div className="flex flex-col items-end">
+                    <span>11:30 AM - 3:00 PM</span>
+                    <span>4:00 PM - 9:00 PM</span>
+                  </div>
                 </div>
-                <div className="flex justify-between items-center gap-4">
+                <div className="flex justify-between items-start gap-4">
                   <span>Sun</span>
-                  <span>11:00 AM - 3:00 PM</span>
+                  <span className="text-right">11:00 AM - 3:00 PM</span>
                 </div>
               </div>
             </div>

@@ -50,7 +50,7 @@ export function OurStory() {
             </div>
 
             <Link 
-              href="/about" 
+              href="/our-story" 
               className="btn-primary inline-block"
               style={{ lineHeight: '1.3rem' }}
             >

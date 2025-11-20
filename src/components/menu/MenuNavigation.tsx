@@ -10,48 +10,19 @@ interface MenuSection {
 }
 
 interface MenuNavigationProps {
+  selectedMeal: string
+  onMealChange: (meal: string) => void
   sections: MenuSection[]
 }
 
-export function MenuNavigation({ sections }: MenuNavigationProps) {
-  const [activeSection, setActiveSection] = useState(sections[0]?.id || '')
+const MEAL_OPTIONS = ['Brunch', 'Lunch', 'Dinner']
+
+export function MenuNavigation({ selectedMeal, onMealChange, sections }: MenuNavigationProps) {
   const [isSticky, setIsSticky] = useState(false)
   const [navHeight, setNavHeight] = useState(0)
   const navRef = useRef<HTMLDivElement | null>(null)
   const buttonRefs = useRef<Map<string, HTMLButtonElement>>(new Map())
   const STICKY_OFFSET_PX = 64 // matches fixed header height
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + 200
-
-      for (const section of sections) {
-        const element = document.getElementById(section.id)
-        if (element) {
-          const { offsetTop, offsetHeight } = element
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(section.id)
-            break
-          }
-        }
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [sections])
-
-  // Auto-scroll to active button
-  useEffect(() => {
-    const activeButton = buttonRefs.current.get(activeSection)
-    if (activeButton && navRef.current) {
-      activeButton.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'center'
-      })
-    }
-  }, [activeSection])
 
   useEffect(() => {
     const onScrollForSticky = () => {
@@ -83,15 +54,22 @@ export function MenuNavigation({ sections }: MenuNavigationProps) {
     }
   }, [])
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId)
-    if (element) {
-      const offsetTop = element.offsetTop - 120
-      window.scrollTo({
-        top: offsetTop,
-        behavior: 'smooth'
-      })
-    }
+  const handleMealChange = (meal: string) => {
+    onMealChange(meal)
+    // Scroll to top of menu content when meal changes
+    setTimeout(() => {
+      const firstSection = sections[0]
+      if (firstSection) {
+        const element = document.getElementById(firstSection.id)
+        if (element) {
+          const offsetTop = element.offsetTop - 120
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+          })
+        }
+      }
+    }, 100)
   }
 
   return (
@@ -107,30 +85,30 @@ export function MenuNavigation({ sections }: MenuNavigationProps) {
         <div className="w-full h-full overflow-x-auto overflow-y-hidden scrollbar-hide">
           <div className="flex items-center h-full px-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-4 md:gap-6 lg:gap-8 mx-auto" style={{ whiteSpace: 'nowrap' }}>
-              {sections.map((section) => (
+              {MEAL_OPTIONS.map((meal) => (
                 <button
-                  key={section.id}
+                  key={meal}
                   ref={(el) => {
                     if (el) {
-                      buttonRefs.current.set(section.id, el)
+                      buttonRefs.current.set(meal, el)
                     } else {
-                      buttonRefs.current.delete(section.id)
+                      buttonRefs.current.delete(meal)
                     }
                   }}
                   type="button"
-                  onClick={() => scrollToSection(section.id)}
+                  onClick={() => handleMealChange(meal)}
                   className={clsx(
                     'px-4 md:px-6 py-2 md:py-3 text-sm font-medium rounded-lg outline-none transition-[background-color,color,border] duration-300 ease-out flex-shrink-0',
-                    activeSection === section.id ? 'shadow-sm' : 'hover:opacity-80'
+                    selectedMeal === meal ? 'shadow-sm' : 'hover:opacity-80'
                   )}
                   style={{
-                    backgroundColor: activeSection === section.id ? '#3a3a3a' : 'transparent',
-                    color: activeSection === section.id ? '#CCBB98' : '#f2f2f2',
-                    border: activeSection === section.id ? '1px solid #CCBB98' : '1px solid transparent',
+                    backgroundColor: selectedMeal === meal ? '#3a3a3a' : 'transparent',
+                    color: selectedMeal === meal ? '#CCBB98' : '#f2f2f2',
+                    border: selectedMeal === meal ? '1px solid #CCBB98' : '1px solid transparent',
                     WebkitTapHighlightColor: 'rgba(0,0,0,0)'
                   }}
                 >
-                  {section.title}
+                  {meal}
                 </button>
               ))}
             </div>

@@ -16,6 +16,7 @@ type EventItem = {
   image?: string
   status?: 'upcoming' | 'past' | string
   featured?: boolean
+  url?: string
 }
 
 const AIRTABLE_API_URL = 'https://api.airtable.com/v0'
@@ -97,6 +98,9 @@ function normalizeRecord(record: AirtableRecord): EventItem {
       : false
   const isFeatured = Boolean((f.Featured ?? f.featured ?? false) || isFeaturedFromTags)
 
+  // Extract URL field - try multiple possible field names
+  const url: string | undefined = f['Booking Link'] || f['URL'] || f['Url'] || f['Link'] || f['Reservation URL'] || f['Reservation Link'] || undefined
+
   return {
     id: record.id,
     title,
@@ -108,6 +112,7 @@ function normalizeRecord(record: AirtableRecord): EventItem {
     image: photo?.url || f.ImageUrl || f.image || undefined,
     status,
     featured: isFeatured,
+    url: typeof url === 'string' ? url.trim() : undefined,
   }
 }
 

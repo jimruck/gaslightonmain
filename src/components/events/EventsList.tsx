@@ -17,6 +17,7 @@ type EventItem = {
   image?: string
   status?: 'upcoming' | 'past' | string
   featured?: boolean
+  url?: string
 }
 
 export function EventsList() {
@@ -144,9 +145,20 @@ export function EventsList() {
                   </div>
                 )}
                 <div className="flex justify-center md:justify-end">
-                  <Link href={`/events/${event.id}`} className="btn-primary">
-                    Reserve Your Spot
-                  </Link>
+                  {event.url ? (
+                    <a 
+                      href={event.url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="btn-primary"
+                    >
+                      Reserve Your Spot
+                    </a>
+                  ) : (
+                    <Link href={`/events/${event.id}`} className="btn-primary">
+                      Reserve Your Spot
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>

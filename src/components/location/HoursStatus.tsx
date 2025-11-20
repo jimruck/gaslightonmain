@@ -29,18 +29,33 @@ export function HoursStatus() {
       const minute = now.getMinutes()
       const currentTime = hour * 60 + minute
 
-      // Restaurant hours: Mon-Thu 5-9 PM, Fri-Sat 5-10 PM, Sun Closed
+      // Restaurant hours:
+      // Wednesday: 4:00 PM - 8:00 PM (Dinner)
+      // Thursday: 11:30 AM - 3:00 PM (Lunch), 4:00 PM - 8:00 PM (Dinner)
+      // Friday: 11:30 AM - 3:00 PM (Lunch), 4:00 PM - 9:00 PM (Dinner)
+      // Saturday: 11:30 AM - 3:00 PM (Lunch), 4:00 PM - 9:00 PM (Dinner)
+      // Sunday: 11:00 AM - 3:00 PM (Brunch)
+      // Monday & Tuesday: Closed
       // Kitchen closes 30 minutes before restaurant
       // Bar stays open until closing
       
       const schedule = {
-        0: null, // Sunday - Closed
-        1: { open: 17 * 60, close: 21 * 60, kitchenClose: 20.5 * 60 }, // Monday
-        2: { open: 17 * 60, close: 21 * 60, kitchenClose: 20.5 * 60 }, // Tuesday
-        3: { open: 17 * 60, close: 21 * 60, kitchenClose: 20.5 * 60 }, // Wednesday
-        4: { open: 17 * 60, close: 21 * 60, kitchenClose: 20.5 * 60 }, // Thursday
-        5: { open: 17 * 60, close: 22 * 60, kitchenClose: 21.5 * 60 }, // Friday
-        6: { open: 17 * 60, close: 22 * 60, kitchenClose: 21.5 * 60 }, // Saturday
+        0: [{ open: 11 * 60, close: 15 * 60, kitchenClose: 14.5 * 60 }], // Sunday - Brunch
+        1: null, // Monday - Closed
+        2: null, // Tuesday - Closed
+        3: [{ open: 16 * 60, close: 20 * 60, kitchenClose: 19.5 * 60 }], // Wednesday - Dinner
+        4: [
+          { open: 11 * 60 + 30, close: 15 * 60, kitchenClose: 14.5 * 60 }, // Thursday - Lunch
+          { open: 16 * 60, close: 20 * 60, kitchenClose: 19.5 * 60 } // Thursday - Dinner
+        ],
+        5: [
+          { open: 11 * 60 + 30, close: 15 * 60, kitchenClose: 14.5 * 60 }, // Friday - Lunch
+          { open: 16 * 60, close: 21 * 60, kitchenClose: 20.5 * 60 } // Friday - Dinner
+        ],
+        6: [
+          { open: 11 * 60 + 30, close: 15 * 60, kitchenClose: 14.5 * 60 }, // Saturday - Lunch
+          { open: 16 * 60, close: 21 * 60, kitchenClose: 20.5 * 60 } // Saturday - Dinner
+        ],
       }
 
       const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -52,33 +67,54 @@ export function HoursStatus() {
       let kitchenStatus = 'Kitchen Closed'
       let barStatus = 'Bar Closed'
 
-      if (todaySchedule && currentTime >= todaySchedule.open && currentTime < todaySchedule.close) {
-        isOpen = true
-        status = 'Open Now'
-        
-        // Kitchen status
-        if (currentTime < todaySchedule.kitchenClose) {
-          kitchenStatus = 'Kitchen Open'
-        } else {
-          kitchenStatus = 'Kitchen Closed'
+      // Check if we're in any open period today
+      if (todaySchedule && Array.isArray(todaySchedule)) {
+        for (const period of todaySchedule) {
+          if (currentTime >= period.open && currentTime < period.close) {
+            isOpen = true
+            status = 'Open Now'
+            
+            // Kitchen status
+            if (currentTime < period.kitchenClose) {
+              kitchenStatus = 'Kitchen Open'
+            } else {
+              kitchenStatus = 'Kitchen Closed'
+            }
+            
+            barStatus = 'Bar Open'
+            
+            const closeHour = Math.floor(period.close / 60)
+            const closeMinute = period.close % 60
+            const closeTime = `${closeHour > 12 ? closeHour - 12 : closeHour}:${closeMinute.toString().padStart(2, '0')} ${closeHour >= 12 ? 'PM' : 'AM'}`
+            nextChange = `Closes at ${closeTime}`
+            break
+          }
         }
         
-        barStatus = 'Bar Open'
-        
-        const closeHour = Math.floor(todaySchedule.close / 60)
-        const closeMinute = todaySchedule.close % 60
-        const closeTime = `${closeHour > 12 ? closeHour - 12 : closeHour}:${closeMinute.toString().padStart(2, '0')} ${closeHour >= 12 ? 'PM' : 'AM'}`
-        nextChange = `Closes at ${closeTime}`
-      } else {
+        // If not open now, check if we're between periods (e.g., between lunch and dinner)
+        if (!isOpen && todaySchedule.length > 1) {
+          const firstPeriod = todaySchedule[0]
+          const secondPeriod = todaySchedule[1]
+          if (currentTime >= firstPeriod.close && currentTime < secondPeriod.open) {
+            const openHour = Math.floor(secondPeriod.open / 60)
+            const openMinute = secondPeriod.open % 60
+            const openTime = `${openHour > 12 ? openHour - 12 : openHour}:${openMinute.toString().padStart(2, '0')} ${openHour >= 12 ? 'PM' : 'AM'}`
+            nextChange = `Reopens today at ${openTime}`
+          }
+        }
+      }
+      
+      if (!isOpen && !nextChange) {
         // Find next opening
         let nextOpenDay = (day + 1) % 7
         let daysUntilOpen = 1
 
         while (daysUntilOpen <= 7) {
           const nextDaySchedule = schedule[nextOpenDay as keyof typeof schedule]
-          if (nextDaySchedule) {
-            const openHour = Math.floor(nextDaySchedule.open / 60)
-            const openMinute = nextDaySchedule.open % 60
+          if (nextDaySchedule && Array.isArray(nextDaySchedule)) {
+            const firstPeriod = nextDaySchedule[0]
+            const openHour = Math.floor(firstPeriod.open / 60)
+            const openMinute = firstPeriod.open % 60
             const openTime = `${openHour > 12 ? openHour - 12 : openHour}:${openMinute.toString().padStart(2, '0')} ${openHour >= 12 ? 'PM' : 'AM'}`
             
             if (daysUntilOpen === 1) {
@@ -173,17 +209,27 @@ export function HoursStatus() {
           Weekly Hours
         </h3>
         <div className="space-y-3">
-          <div className="flex justify-between items-center py-2">
-            <span className="font-medium text-accent-900">Monday - Thursday</span>
-            <span className="text-accent-700">5:00 PM - 9:00 PM</span>
+          <div className="flex justify-between items-start py-2">
+            <span className="font-medium text-accent-900">Wed</span>
+            <span className="text-accent-700 text-right">4:00 PM - 8:00 PM</span>
           </div>
-          <div className="flex justify-between items-center py-2">
-            <span className="font-medium text-accent-900">Friday - Saturday</span>
-            <span className="text-accent-700">5:00 PM - 10:00 PM</span>
+          <div className="flex justify-between items-start py-2">
+            <span className="font-medium text-accent-900">Thu</span>
+            <div className="flex flex-col items-end">
+              <span className="text-accent-700">11:30 AM - 3:00 PM</span>
+              <span className="text-accent-700">4:00 PM - 8:00 PM</span>
+            </div>
           </div>
-          <div className="flex justify-between items-center py-2">
-            <span className="font-medium text-accent-900">Sunday</span>
-            <span className="text-red-600 font-medium">Closed</span>
+          <div className="flex justify-between items-start py-2">
+            <span className="font-medium text-accent-900">Fri, Sat</span>
+            <div className="flex flex-col items-end">
+              <span className="text-accent-700">11:30 AM - 3:00 PM</span>
+              <span className="text-accent-700">4:00 PM - 9:00 PM</span>
+            </div>
+          </div>
+          <div className="flex justify-between items-start py-2">
+            <span className="font-medium text-accent-900">Sun</span>
+            <span className="text-accent-700 text-right">11:00 AM - 3:00 PM</span>
           </div>
         </div>
         <p className="text-sm text-accent-600 mt-4 text-center">

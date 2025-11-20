@@ -55,17 +55,27 @@ export function MapSnippet() {
                 <div>
                   <h3 className="font-semibold text-accent-900 mb-2">Hours</h3>
                   <div className="space-y-1 text-accent-700">
-                    <div className="flex justify-between">
-                      <span>Monday - Thursday</span>
-                      <span>5:00 PM - 9:00 PM</span>
+                    <div className="flex justify-between items-start">
+                      <span>Wed</span>
+                      <span className="text-right">4:00 PM - 8:00 PM</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span>Friday - Saturday</span>
-                      <span>5:00 PM - 10:00 PM</span>
+                    <div className="flex justify-between items-start">
+                      <span>Thu</span>
+                      <div className="flex flex-col items-end">
+                        <span>11:30 AM - 3:00 PM</span>
+                        <span>4:00 PM - 8:00 PM</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between">
-                      <span>Sunday</span>
-                      <span>Closed</span>
+                    <div className="flex justify-between items-start">
+                      <span>Fri, Sat</span>
+                      <div className="flex flex-col items-end">
+                        <span>11:30 AM - 3:00 PM</span>
+                        <span>4:00 PM - 9:00 PM</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-start">
+                      <span>Sun</span>
+                      <span className="text-right">11:00 AM - 3:00 PM</span>
                     </div>
                   </div>
                 </div>

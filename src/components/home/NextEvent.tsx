@@ -16,6 +16,7 @@ interface NextEventData {
   price?: string
   image?: string
   status?: string
+  url?: string
 }
 
 export function NextEvent() {
@@ -165,12 +166,23 @@ export function NextEvent() {
                   </span>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <Link 
-                    href={`/events/${nextEvent.id}`} 
-                    className="btn-primary flex-1 text-center"
-                  >
-                    Reserve Your Spot
-                  </Link>
+                  {nextEvent.url ? (
+                    <a 
+                      href={nextEvent.url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="btn-primary flex-1 text-center"
+                    >
+                      Reserve Your Spot
+                    </a>
+                  ) : (
+                    <Link 
+                      href={`/events/${nextEvent.id}`} 
+                      className="btn-primary flex-1 text-center"
+                    >
+                      Reserve Your Spot
+                    </Link>
+                  )}
                   <Link 
                     href="/events" 
                     className="flex-1 text-center bg-transparent px-8 py-3 font-semibold transition-all duration-300 focus:outline-none hover:scale-105 hover:shadow-lg"

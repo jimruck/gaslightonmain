@@ -33,15 +33,27 @@ export function StructuredData({ type, data }: StructuredDataProps) {
       openingHoursSpecification: [
         {
           '@type': 'OpeningHoursSpecification',
-          dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday'],
-          opens: '17:00',
-          closes: '21:00'
+          dayOfWeek: ['Wednesday', 'Thursday'],
+          opens: '16:00',
+          closes: '20:00'
+        },
+        {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: ['Thursday', 'Friday', 'Saturday'],
+          opens: '11:30',
+          closes: '15:00'
         },
         {
           '@type': 'OpeningHoursSpecification',
           dayOfWeek: ['Friday', 'Saturday'],
-          opens: '17:00',
-          closes: '22:00'
+          opens: '16:00',
+          closes: '21:00'
+        },
+        {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: ['Sunday'],
+          opens: '11:00',
+          closes: '15:00'
         }
       ],
       menu: 'https://gaslightonmain.com/menu',

@@ -17,8 +17,8 @@ export function PrivateDiningCTA() {
             Ready to Plan Your Event?
           </h2>
           <p className="text-xl mb-8" style={{ color: '#f2f2f2' }}>
-            Our team is here to help create an unforgettable experience tailored to your needs. 
-            Call us today to discuss your private dining event and reserve your date.
+          Your dedicated event contact will walk through each detail with you to ensure full clarity and accuracy before finalization.
+          Our goal is to deliver exceptional hospitality by aligning expectations and customizing your event to best suit your needs.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
@@ -51,7 +51,7 @@ export function PrivateDiningCTA() {
           </div>
 
           <p className="text-sm" style={{ color: '#a0a0a0' }}>
-            Available during business hours: Wed-Thurs 4-8 PM, Fri-Sat 4-9 PM, Sun 11 AM-3 PM
+            Available during business hours: Wed 4:00 PM - 8:00 PM, Thu 11:30 AM - 3:00 PM, 4:00 PM - 8:00 PM, Fri-Sat 11:30 AM - 3:00 PM, 4:00 PM - 9:00 PM, Sun 11:00 AM - 3:00 PM
           </p>
         </motion.div>
       </div>
