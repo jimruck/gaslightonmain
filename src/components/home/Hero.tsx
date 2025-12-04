@@ -133,7 +133,7 @@ export function Hero() {
           playsInline
           className="w-full h-full object-cover"
         >
-          <source src="/brand/images/website-banner.mp4" type="video/mp4" />
+          <source src="/brand/images/Website-Banner.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-black/70"></div>
       </div>
