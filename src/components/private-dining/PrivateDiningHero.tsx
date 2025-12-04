@@ -8,7 +8,7 @@ export function PrivateDiningHero() {
     <section className="relative h-96 flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
-          src="/brand/images/128.jpg"
+          src="/brand/images/126.jpg"
           alt="Private Dining at The Gaslight on Main"
           fill
           className="object-cover"
@@ -30,8 +30,8 @@ export function PrivateDiningHero() {
           </h1>
           
           <p className="text-xl md:text-2xl text-cream-100 leading-relaxed">
-            Host your special event in an intimate, elegant setting designed to make 
-            every moment unforgettable.
+            Choose from two distinct private dining spaces—our exclusive Private Dining Room 
+            or the vibrant Salle—each designed to make your event unforgettable.
           </p>
         </motion.div>
       </div>

@@ -64,8 +64,8 @@ export function ReservationPolicy() {
             <h4 className="text-base md:text-lg font-semibold" style={{ color: '#171717' }}>Special Occasions</h4>
           </div>
           <div className="space-y-2" style={{ color: '#171717' }}>
-            <p className="text-sm md:text-base">• Let us know when making your reservation and we'll do our best to help make your evening extra memorable</p>
-            <p className="text-sm md:text-base">• No outside food or beverages is allowed. However, we do offer a $15 corkage fee per bottle of wine not featured on our list and a $2 per guest cake-cutting and plating fee for celebration cakes.</p>
+            <p className="text-sm md:text-base">• Call or email us when making your reservation and we'll do our best to help make your evening extra memorable</p>
+            <p className="text-sm md:text-base">• We offer a $15 corkage fee per bottle of wine not featured on our list and a $2 per guest cake-cutting and plating fee for celebration cakes.</p>
           </div>
         </div>
 

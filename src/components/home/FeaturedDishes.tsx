@@ -171,6 +171,16 @@ export function FeaturedDishes() {
           >
             View Full Menu
           </Link>
+          <div className="flex justify-center mt-6">
+            <Image
+              src="/brand/images/DC2-2025.png"
+              alt="OpenTable Diners' Choice 2025"
+              width={150}
+              height={150}
+              className="object-contain"
+              style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))' }}
+            />
+          </div>
         </motion.div>
       </div>
     </section>

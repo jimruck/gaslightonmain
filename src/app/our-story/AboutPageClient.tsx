@@ -69,22 +69,6 @@ export function AboutPageClient() {
             priority
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-black/50" />
-        </div>
-        <div className="relative z-10 text-center text-white container-custom px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto"
-          >
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-4 md:mb-6">
-              Our Story
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl text-cream-100 leading-relaxed max-w-2xl mx-auto">
-              A tale of passion, community, and the warm glow of hospitality
-            </p>
-          </motion.div>
         </div>
       </section>
 
@@ -101,6 +85,9 @@ export function AboutPageClient() {
             className="mb-12 sm:mb-16"
           >
             <div className="bg-white rounded-xl shadow-sm p-6 sm:p-8 lg:p-12">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold mb-6" style={{ color: '#b5956d' }}>
+                Our Story
+              </h1>
               <p className="text-base sm:text-lg leading-relaxed" style={{ color: '#171717' }}>
               At The Gaslight on Main, our story begins with a simple belief: food and hospitality have the power to bring people together in meaningful ways. Owners Chef Daniel Zbiegien and his wife Dr. Rebecca Burke, are proud to be a part of the Kernersville community. Like many families, their most cherished moments happen around a table—sharing food, laughter, and connection. The Gaslight on Main was born out of their desire to create a space where neighbors, friends, and visitors alike could experience that same sense of warmth and belonging.
               </p>
@@ -121,10 +108,10 @@ export function AboutPageClient() {
                   Inspired by Charleston
                 </h2>
                 <p className="text-base sm:text-lg leading-relaxed mb-4" style={{ color: '#171717' }}>
-                  While traveling together in Charleston, South Carolina, Daniel and Rebecca were captivated by the city's historic charm, gracious hospitality, and flickering gaslights that lined its streets. On an evening walk beneath their glow, the spark for this restaurant was lit.
+                  While traveling together in Charleston, South Carolina, Daniel and Rebecca were captivated by the city's historic charm, artwork, gracious hospitality, and flickering gaslights that lined its streets. On an evening walk beneath their glow, the spark for this restaurant was lit.
                 </p>
                 <p className="text-base sm:text-lg leading-relaxed" style={{ color: '#171717' }}>
-                  Just as Charleston's gaslights once guided their way, the gaslight that stands above the restaurant's entrance serves as a beacon for all who step inside, inviting each guest into an atmosphere of comfort and unforgettable experiences.
+                  Just as Charleston's gaslights once guided their way, the gaslight that stands above the restaurant's entrance serves as a beacon for all who step inside, inviting each guest into an atmosphere of comfort and unforgettable experiences. With careful attention to every detail, Daniel and Rebecca even featured artwork from local Charleston artist Gordon Wheeler throughout The Gaslight on Main.
                 </p>
               </div>
               <div className="order-1 lg:order-2">
@@ -263,7 +250,7 @@ export function AboutPageClient() {
                     Head Chef and Owner
                   </p>
                   <p className="text-sm sm:text-base leading-relaxed" style={{ color: '#171717' }}>
-                    Chef Daniel Zbiegien brings more than a decade of professional kitchen expertise to The Gaslight on Main, shaped by acclaimed restaurants and award-winning culinary programs across the United States and New Zealand.
+                    Chef Daniel Zbiegien brings decades of professional kitchen expertise to The Gaslight on Main, shaped by acclaimed restaurants and award-winning culinary programs across the United States and New Zealand.
                   </p>
                   <p className="text-sm sm:text-base leading-relaxed mt-4" style={{ color: '#171717' }}>
                     Daniel began his formative training in Boston at Bistro du Midi, where he worked under Le Bernardin-trained Chef Robert Sisca. He quickly rose from Line Cook to Executive Sous Chef, mastering the stations of Garde Manger, Entremet, Meats, and Fish, contributing to menu development, and gaining deep experience in high-volume, fine-dining operations.
@@ -281,7 +268,7 @@ export function AboutPageClient() {
                     When he isn't leading the kitchen, Daniel enjoys time with his family, collaborating with local farmers, and continually exploring the endless world of culinary craft.
                   </p>
                   <p className="text-sm sm:text-base leading-relaxed mt-4" style={{ color: '#171717' }}>
-                    At The Gaslight on Main, Chef Daniel's mission is to create a vibrant neighborhood dining experience—where Kernersville gathers, celebrates, and feels right at home.
+                    At The Gaslight on Main, Chef Daniel's mission is to create a vibrant neighborhood dining experience—where the Triad gathers, celebrates, and feels right at home.
                   </p>
                 </div>
               </motion.div>

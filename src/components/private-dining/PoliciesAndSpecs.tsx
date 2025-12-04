@@ -7,8 +7,8 @@ const specifications = [
   {
     icon: Users,
     title: 'Party Size',
-    description: 'Accommodates 12-30 guests comfortably',
-    detail: 'Perfect for intimate gatherings and medium-sized celebrations'
+    description: 'Private Dining Room: 12-30 guests | Salle: 20-40 guests',
+    detail: 'Choose the space that best fits your guest count and event style'
   },
   {
     icon: Calendar,
@@ -45,7 +45,7 @@ const specifications = [
 const policies = [
   'A non-refundable deposit is required to secure your reservation',
   'Final guest count must be confirmed prior to event',
-  'Menu selections should be finalized your event',
+  'Menu selections should be finalized 48 hours prior to your event',
   'Decorations are welcome with prior approval',
   'We accommodate dietary restrictions and allergies with advance notice',
   'Private dining events are subject to a service charge'

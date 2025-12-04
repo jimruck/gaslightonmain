@@ -42,7 +42,7 @@ export function OpenTableWidget() {
         <img
           src="/brand/images/DC2-2025.png"
           alt="OpenTable Diners' Choice 2025"
-          className="w-[75px] h-[75px] object-contain"
+          className="w-[150px] h-[150px] object-contain"
           style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))' }}
         />
       </div>
@@ -50,7 +50,7 @@ export function OpenTableWidget() {
       {/* Alternative Contact */}
       <div className="mt-4 pt-3 text-center" style={{ borderTop: '1px solid #f2f2f2' }}>
         <p className="mb-2 text-sm md:text-base" style={{ color: '#171717' }}>
-          Prefer to speak with someone directly?
+          Prefer to book over the phone or need to speak to someone about a private dining event? Call or email us:
         </p>
         <a
           href="tel:+13364974025"
@@ -58,6 +58,14 @@ export function OpenTableWidget() {
           style={{ color: '#835F3A' }}
         >
           <span>(336) 497-4025</span>
+        </a>
+        <br />
+        <a
+          href="mailto:eat@thegaslightonmain.com"
+          className="inline-flex items-center space-x-2 font-medium transition-opacity duration-200 hover:opacity-80 text-sm md:text-base"
+          style={{ color: '#835F3A' }}
+        >
+          <span>eat@thegaslightonmain.com</span>
         </a>
       </div>
     </motion.div>
