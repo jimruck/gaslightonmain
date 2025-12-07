@@ -114,7 +114,7 @@ export function PrivateDiningSpaces() {
                     Seating Capacity
                   </h4>
                   <p className="text-2xl font-bold mb-2" style={{ color: '#f2f2f2' }}>
-                    12-30 Guests
+                    Max 15 Guests
                   </p>
                   <p className="text-sm" style={{ color: '#a0a0a0' }}>
                     Comfortable seating for intimate to medium-sized events

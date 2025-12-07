@@ -7,7 +7,7 @@ const specifications = [
   {
     icon: Users,
     title: 'Party Size',
-    description: 'Private Dining Room: 12-30 guests | Salle: 20-40 guests',
+    description: 'Private Dining Room: Max 15 guests | Salle: 20-40 guests',
     detail: 'Choose the space that best fits your guest count and event style'
   },
   {

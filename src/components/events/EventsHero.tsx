@@ -8,7 +8,7 @@ export function EventsHero() {
     <section className="relative h-96 flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
-          src="/brand/images/230.jpg"
+          src="/brand/images/111.jpg"
           alt="Special event at The Gaslight on Main"
           fill
           className="object-cover"

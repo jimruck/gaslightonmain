@@ -64,7 +64,7 @@ const galleryImages = [
   {
     src: '/brand/images/29.jpg',
     alt: 'Restaurant exterior',
-    title: 'The Gaslight Seasonal Salad',
+    title: 'The Goat Cheese and Beet Salad',
   },
   {
     src: '/brand/images/21.jpg',

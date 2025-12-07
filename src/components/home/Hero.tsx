@@ -135,7 +135,7 @@ export function Hero() {
         >
           <source src="/brand/images/Website-Banner.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-black/70"></div>
+        <div className="absolute inset-0 bg-black/50"></div>
       </div>
       
       <div className="relative z-10 text-center text-white container-custom pb-20" style={{ paddingTop: '1rem' }}>
@@ -151,7 +151,7 @@ export function Hero() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="mb-8"
-            style={{ filter: 'drop-shadow(0 15px 25px rgba(0, 0, 0, 0.8))' }}
+            style={{ filter: 'drop-shadow(0 2px 5px rgba(0, 0, 0, 0.8))' }}
             
           >
             <Image

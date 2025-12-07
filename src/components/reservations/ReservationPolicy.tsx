@@ -40,7 +40,7 @@ export function ReservationPolicy() {
           <div className="space-y-2" style={{ color: '#171717' }}>
             <p className="text-sm md:text-base">• Online reservations are accepted for parties up to 6 guests.</p>
             <p className="text-sm md:text-base">• Parties of 7 or more require a phone reservation</p>
-            <p className="text-sm md:text-base">• Private dining options available for groups of 12-30</p>
+            <p className="text-sm md:text-base">• Private dining options available for groups up to 40 guests</p>
           </div>
         </div>
 
@@ -64,7 +64,7 @@ export function ReservationPolicy() {
             <h4 className="text-base md:text-lg font-semibold" style={{ color: '#171717' }}>Special Occasions</h4>
           </div>
           <div className="space-y-2" style={{ color: '#171717' }}>
-            <p className="text-sm md:text-base">• Call or email us when making your reservation and we'll do our best to help make your evening extra memorable</p>
+            <p className="text-sm md:text-base">• Call or email us when making your reservation and we will ensure your evening is extra memorable.</p>
             <p className="text-sm md:text-base">• We offer a $15 corkage fee per bottle of wine not featured on our list and a $2 per guest cake-cutting and plating fee for celebration cakes.</p>
           </div>
         </div>

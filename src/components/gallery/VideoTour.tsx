@@ -42,7 +42,7 @@ export function VideoTour() {
                 Virtual Tour
               </h3>
               <p style={{ color: '#f2f2f2' }}>
-                Explore our beautifully designed spaces, from the elegant main dining room perfect for intimate dinners and special celebrations, to the exclusive private dining room ideal for events and business gatherings, and the sophisticated salle that brings it all together in warm, welcoming ambiance.
+                Explore our beautifully designed spaces, from the elegant main dining room perfect for intimate dinners and special celebrations, to the exclusive private dining room ideal for events and business gatherings, and the sophisticated Salle that brings it all together in warm, welcoming ambiance.
               </p>
             </div>
           </motion.div>
