@@ -12,9 +12,9 @@ const specifications = [
   },
   {
     icon: Calendar,
-    title: 'Advance Booking',
-    description: 'Minimum 2 weeks notice required',
-    detail: 'Popular dates book quickly, so plan ahead'
+    title: 'Flexible scheduling',
+    description: 'We welcome last-minute requests',
+    detail: "We're happy to accommodate parties even the night before. Call us and we'll do our best to make it work!"
   },
   {
     icon: Clock,
@@ -45,7 +45,7 @@ const specifications = [
 const policies = [
   'A non-refundable deposit is required to secure your reservation',
   'Final guest count must be confirmed prior to event',
-  'Menu selections should be finalized 48 hours prior to your event',
+  "Menu selections can be finalized closer to your event date - we're flexible!",
   'Decorations are welcome with prior approval',
   'We accommodate dietary restrictions and allergies with advance notice',
   'Private dining events are subject to a service charge'
