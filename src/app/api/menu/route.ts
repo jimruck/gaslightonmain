@@ -90,15 +90,16 @@ export async function GET(request: NextRequest) {
       url.searchParams.set('sort[0][direction]', 'asc')
     }
 
-    const res = await fetch(url.toString(), {
+    // Revalidate periodically on the server to keep data fresh
+    const fetchOptions: RequestInit & { next?: { revalidate: number } } = {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
-      // Revalidate periodically on the server to keep data fresh
-      // @ts-ignore - Next.js runtime option
       next: { revalidate: 300 },
-    })
+    }
+
+    const res = await fetch(url.toString(), fetchOptions)
 
     if (!res.ok) {
       const text = await res.text()

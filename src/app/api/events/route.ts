@@ -46,11 +46,29 @@ function normalizeRecord(record: AirtableRecord): EventItem {
   const end = Number.isFinite(endMs) ? new Date(endMs) : undefined
 
   const isValid = (d?: Date) => !!d && Number.isFinite(d.getTime())
-  const sameDay = (a: Date, b: Date) =>
-    a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate()
-
-  const formatDate = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-  const formatTime = (d: Date) => d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+  
+  // Use explicit timezone to ensure consistent formatting across environments
+  // Kernersville, NC is in Eastern Time (America/New_York)
+  const timezone = 'America/New_York'
+  
+  // Timezone-aware same day check
+  const sameDay = (a: Date, b: Date) => {
+    const aStr = a.toLocaleDateString('en-US', { timeZone: timezone })
+    const bStr = b.toLocaleDateString('en-US', { timeZone: timezone })
+    return aStr === bStr
+  }
+  
+  const formatDate = (d: Date) => d.toLocaleDateString('en-US', { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric',
+    timeZone: timezone
+  })
+  const formatTime = (d: Date) => d.toLocaleTimeString('en-US', { 
+    hour: 'numeric', 
+    minute: '2-digit',
+    timeZone: timezone
+  })
 
   let date: string = ''
   let time: string | undefined = undefined
@@ -130,15 +148,16 @@ export async function GET(request: NextRequest) {
       url.searchParams.set('sort[0][direction]', 'asc')
     }
 
-    const res = await fetch(url.toString(), {
+    // Revalidate periodically on the server to keep data fresh
+    const fetchOptions: RequestInit & { next?: { revalidate: number } } = {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
-      // Revalidate periodically on the server to keep data fresh
-      // @ts-ignore - Next.js runtime option
       next: { revalidate: 300 },
-    })
+    }
+
+    const res = await fetch(url.toString(), fetchOptions)
 
     if (!res.ok) {
       const text = await res.text()

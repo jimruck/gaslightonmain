@@ -44,24 +44,6 @@ export function MenuPageClient() {
         if (isMounted) {
           // Store all items for filtering by meal
           const allMenuItems = data.items || []
-          
-          // Debug: Log meal values to help troubleshoot
-          console.log('Menu API response:', {
-            hasItems: !!data.items,
-            itemsCount: allMenuItems.length,
-            hasSections: !!data.sections,
-            sectionsCount: data.sections ? Object.keys(data.sections).length : 0
-          })
-          
-          if (allMenuItems.length > 0) {
-            const allMeals = allMenuItems.flatMap((item: MenuItem) => item.meal || [])
-            const uniqueMeals = Array.from(new Set(allMeals))
-            console.log('Available meals in data:', uniqueMeals)
-            console.log('Sample item:', allMenuItems[0])
-          } else {
-            console.warn('No items found in API response. Data structure:', Object.keys(data))
-          }
-          
           setAllItems(allMenuItems)
         }
       } catch (err: any) {
