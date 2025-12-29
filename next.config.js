@@ -37,7 +37,7 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
-    formats: ['image/webp', 'image/avif'],
+    formats: ['image/webp'], // Removed AVIF to reduce transformations by 50%
   },
   async headers() {
     return [

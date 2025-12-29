@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+// Cache this route for 2 hours (7200 seconds) to reduce Airtable API calls
+// This results in ~720 calls/month (2 routes × 12 calls/day × 30 days)
+export const revalidate = 7200
+
 type AirtableRecord = {
   id: string
   fields: Record<string, unknown>
@@ -96,7 +100,7 @@ export async function GET(request: NextRequest) {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
-      next: { revalidate: 300 },
+      next: { revalidate: 7200 },
     }
 
     const res = await fetch(url.toString(), fetchOptions)

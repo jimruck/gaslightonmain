@@ -92,6 +92,7 @@ export function EventsList() {
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
+                  unoptimized
                 />
               ) : (
                 <div className="w-full h-full bg-gray-600" />
