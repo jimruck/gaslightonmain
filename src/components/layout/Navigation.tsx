@@ -22,10 +22,11 @@ export function Navigation() {
       className="w-full bg-gray-dark border-b border-gray-medium"
       style={{
         position: 'fixed',
-        top: 0,
+        top: 'var(--banner-height, 0px)',
         left: 0,
         right: 0,
-        zIndex: 9999
+        zIndex: 9999,
+        transition: 'top 0.3s ease-in-out'
       }}
     >
       <div className="container-custom">

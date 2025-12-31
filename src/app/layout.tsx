@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter, Playfair_Display } from 'next/font/google'
 import '@/styles/globals.css'
+import { AnnouncementBanner } from '@/components/layout/AnnouncementBanner'
 import { Navigation } from '@/components/layout/Navigation'
 import { MobileBottomBar } from '@/components/layout/MobileBottomBar'
 import { Footer } from '@/components/layout/Footer'
@@ -78,8 +79,9 @@ export default function RootLayout({
         <StructuredData type="restaurant" />
       </head>
       <body className="min-h-screen bg-gray-dark w-full">
+        <AnnouncementBanner />
         <Navigation />
-        <main className="pt-16 pb-20 md:pb-0 w-full">
+        <main className="pb-20 md:pb-0 w-full">
           {children}
         </main>
         <MobileBottomBar />

@@ -97,5 +97,15 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+
+  /* Navigation and main content positioning based on announcement banner */
+  :root {
+    --banner-height: 0px;
+  }
   
+  main {
+    padding-top: calc(var(--banner-height, 0px) + 64px); /* Banner height + nav height (4rem = 64px) */
+    transition: padding-top 0.3s ease-in-out;
+  }
+
 }
