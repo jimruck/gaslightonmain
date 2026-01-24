@@ -126,11 +126,12 @@ export function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <video
+      <video
           autoPlay
           loop
           muted
           playsInline
+          preload="metadata"
           className="w-full h-full object-cover"
         >
           <source src="/brand/images/Website-Banner.mp4" type="video/mp4" />

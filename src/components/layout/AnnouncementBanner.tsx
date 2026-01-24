@@ -3,18 +3,18 @@
 import { useState, useEffect } from 'react'
 import { X } from 'lucide-react'
 
-const EXPIRY_DATE = new Date('2026-01-11T00:00:00') // Hide after January 10, 2026
+const EXPIRY_DATE = new Date('2026-01-26T00:00:00') // Hide after 12:00 AM Monday, January 26, 2026
 const STORAGE_KEY = 'announcement-banner-dismissed'
 
 export function AnnouncementBanner() {
   const [isVisible, setIsVisible] = useState(false)
   const [isDismissed, setIsDismissed] = useState(false)
 
-  useEffect(() => {
-    // Check if banner should be shown (not expired and not dismissed)
+  const checkVisibility = () => {
     const now = new Date()
     const isExpired = now >= EXPIRY_DATE
     
+    // Hide if expired (after January 26, 2026 12:00 AM)
     if (isExpired) {
       setIsVisible(false)
       document.body.removeAttribute('data-banner-visible')
@@ -32,12 +32,23 @@ export function AnnouncementBanner() {
       return
     }
 
+    // Show banner until expiry date
     setIsVisible(true)
+    setIsDismissed(false)
     document.body.setAttribute('data-banner-visible', 'true')
     document.documentElement.style.setProperty('--banner-height', '50px')
-    
+  }
+
+  useEffect(() => {
+    // Check immediately
+    checkVisibility()
+
+    // Set up interval to check every minute (to catch midnight transition)
+    const interval = setInterval(checkVisibility, 60000) // Check every minute
+
     // Cleanup on unmount
     return () => {
+      clearInterval(interval)
       document.body.removeAttribute('data-banner-visible')
       document.documentElement.style.setProperty('--banner-height', '0px')
     }
@@ -69,7 +80,7 @@ export function AnnouncementBanner() {
       <div className="container-custom relative w-full h-full flex items-center justify-center px-4">
         {/* Message */}
         <p className="text-sm md:text-base font-medium text-center px-8 md:px-12">
-          Closed New Year&apos;s Day &amp; January 10, 2026. Back to regular hours on January 11
+          Closed Sunday due to inclement weather
         </p>
 
         {/* Close Button */}

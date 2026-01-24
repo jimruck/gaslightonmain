@@ -97,7 +97,7 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
-
+  
   /* Navigation and main content positioning based on announcement banner */
   :root {
     --banner-height: 0px;
