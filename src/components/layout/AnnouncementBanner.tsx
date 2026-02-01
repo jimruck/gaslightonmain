@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react'
 import { X } from 'lucide-react'
 
-const EXPIRY_DATE = new Date('2026-01-26T00:00:00') // Hide after 12:00 AM Monday, January 26, 2026
-const STORAGE_KEY = 'announcement-banner-dismissed'
+const EXPIRY_DATE = new Date('2026-02-05T23:59:00') // Hide after 11:59 PM Thursday, February 5, 2026
+const STORAGE_KEY = 'announcement-banner-dismissed-2026-02-05'
 
 export function AnnouncementBanner() {
   const [isVisible, setIsVisible] = useState(false)
@@ -14,7 +14,7 @@ export function AnnouncementBanner() {
     const now = new Date()
     const isExpired = now >= EXPIRY_DATE
     
-    // Hide if expired (after January 26, 2026 12:00 AM)
+    // Hide if expired (after February 5, 2026 11:59 PM)
     if (isExpired) {
       setIsVisible(false)
       document.body.removeAttribute('data-banner-visible')
@@ -80,7 +80,7 @@ export function AnnouncementBanner() {
       <div className="container-custom relative w-full h-full flex items-center justify-center px-4">
         {/* Message */}
         <p className="text-sm md:text-base font-medium text-center px-8 md:px-12">
-          Closed Sunday due to inclement weather
+          Due to inclement weather, please call to check our hours.
         </p>
 
         {/* Close Button */}
