@@ -7,9 +7,7 @@
     "build": "next build",
     "start": "next start --port 3000",
     "lint": "next lint",
-    "cms:migrate": "tsx scripts/migrate-airtable-to-postgres.ts",
-    "cms:sync-admin": "tsx scripts/sync-admin-allowlist.ts",
-    "cms:parity-check": "tsx scripts/parity-check-cms.ts"
+    "cms:sync-admin": "tsx scripts/sync-admin-allowlist.ts"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.19",

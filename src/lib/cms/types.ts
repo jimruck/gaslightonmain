@@ -1,8 +1,3 @@
-export type AirtableRecord = {
-  id: string
-  fields: Record<string, unknown>
-}
-
 export type ApiEventItem = {
   id: string
   title: string
