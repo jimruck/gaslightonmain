@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidateTag } from 'next/cache'
 import { z } from 'zod'
+import { CMS_EVENTS_CACHE_TAG } from '@/lib/cms/cacheTags'
 import { requireAdminApiSession } from '@/lib/auth/adminApi'
 import {
   deleteEventFromDb,
@@ -61,6 +63,7 @@ export async function POST(request: NextRequest) {
       booking_url: parsed.booking_url || null,
       image_url: parsed.image_url || null,
     })
+    revalidateTag(CMS_EVENTS_CACHE_TAG)
     return NextResponse.json({ ok: true })
   } catch (error: any) {
     if (error instanceof z.ZodError) {
@@ -79,6 +82,7 @@ export async function DELETE(request: NextRequest) {
     const body = await request.json()
     const parsed = eventDeleteSchema.parse(body)
     await deleteEventFromDb(parsed.match_title, parsed.match_start_at)
+    revalidateTag(CMS_EVENTS_CACHE_TAG)
     return NextResponse.json({ ok: true })
   } catch (error: any) {
     if (error instanceof z.ZodError) {

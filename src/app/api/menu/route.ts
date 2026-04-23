@@ -1,5 +1,6 @@
 import { unstable_cache } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
+import { CMS_MENU_CACHE_TAG } from '@/lib/cms/cacheTags'
 import type { ApiMenuItem } from '@/lib/cms/types'
 import { serializeMenuItemForApi } from '@/lib/cms/serializers'
 import { getPublicMenuItemsFromDb } from '@/lib/db/cmsRepository'
@@ -18,8 +19,8 @@ const getCachedMenuItems = unstable_cache(
     const items = rows.map(serializeMenuItemForApi)
     return { rows, items }
   },
-  ['cms-menu'],
-  { revalidate: REVALIDATE_SECONDS }
+  [CMS_MENU_CACHE_TAG],
+  { revalidate: REVALIDATE_SECONDS, tags: [CMS_MENU_CACHE_TAG] }
 )
 
 export async function GET(request: NextRequest) {

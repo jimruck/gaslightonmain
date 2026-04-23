@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { unstable_cache } from 'next/cache'
+import { CMS_EVENTS_CACHE_TAG } from '@/lib/cms/cacheTags'
 import { serializeEventForApi } from '@/lib/cms/serializers'
 import { getPublicEventsFromDb } from '@/lib/db/cmsRepository'
 import { isSupabaseServerConfigured } from '@/lib/supabase/env'
@@ -17,8 +18,8 @@ const getCachedEvents = unstable_cache(
     const items = rows.map(serializeEventForApi)
     return { rows, items }
   },
-  ['cms-events'],
-  { revalidate: REVALIDATE_SECONDS }
+  [CMS_EVENTS_CACHE_TAG],
+  { revalidate: REVALIDATE_SECONDS, tags: [CMS_EVENTS_CACHE_TAG] }
 )
 
 export async function GET(request: NextRequest) {
