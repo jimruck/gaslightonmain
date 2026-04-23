@@ -160,45 +160,43 @@ export function NextEvent() {
 
             {nextEvent.price && (
               <div className="bg-gray-dark p-6 rounded-lg border border-gray-500">
-                <div className="flex justify-between items-center mb-4">
+                <div className="flex justify-between items-center">
                   <span className="text-2xl font-serif font-bold text-white">
                     {nextEvent.price}
                     <span className="text-2xl font-serif font-bold text-white ml-2">per person</span>
                   </span>
                 </div>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  {nextEvent.url ? (
-                    <a 
-                      href={nextEvent.url} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="btn-primary flex-1 text-center"
-                    >
-                      Reserve Your Spot
-                    </a>
-                  ) : (
-                    <Link 
-                      href={`/events/${nextEvent.id}`} 
-                      className="btn-primary flex-1 text-center"
-                    >
-                      Reserve Your Spot
-                    </Link>
-                  )}
-                  <Link 
-                    href="/events" 
-                    className="flex-1 text-center bg-transparent px-8 py-3 font-semibold transition-all duration-300 focus:outline-none hover:scale-105 hover:shadow-lg"
-                    style={{ 
-                      color: '#f2f2f2',
-                      border: '1px solid #C89212',
-                      borderRadius: '4px',
-                      lineHeight: '1.3rem'
-                    }}
-                  >
-                    View All Events
-                  </Link>
-                </div>
               </div>
             )}
+
+            <div className="flex flex-col sm:flex-row sm:items-start gap-3">
+              {nextEvent.url ? (
+                <a
+                  href={nextEvent.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary text-center w-fit"
+                >
+                  Reserve Your Spot
+                </a>
+              ) : (
+                <Link href="/events" className="btn-primary text-center w-fit">
+                  Reserve Your Spot
+                </Link>
+              )}
+              <Link
+                href="/events"
+                className="text-center bg-transparent px-8 py-3 font-semibold transition-all duration-300 focus:outline-none hover:scale-105 hover:shadow-lg w-fit"
+                style={{
+                  color: '#f2f2f2',
+                  border: '1px solid #C89212',
+                  borderRadius: '4px',
+                  lineHeight: '1.3rem',
+                }}
+              >
+                View Events
+              </Link>
+            </div>
           </motion.div>
         </div>
       </div>

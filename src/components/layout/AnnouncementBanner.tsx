@@ -1,68 +1,96 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import { X } from 'lucide-react'
 
-const EXPIRY_DATE = new Date('2026-02-05T23:59:00') // Hide after 11:59 PM Thursday, February 5, 2026
-const STORAGE_KEY = 'announcement-banner-dismissed-2026-02-05'
+type LiveAnnouncement = {
+  id: string
+  message: string
+  expires_at: string
+}
 
 export function AnnouncementBanner() {
+  const pathname = usePathname()
+  const [announcement, setAnnouncement] = useState<LiveAnnouncement | null>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [isDismissed, setIsDismissed] = useState(false)
 
-  const checkVisibility = () => {
-    const now = new Date()
-    const isExpired = now >= EXPIRY_DATE
-    
-    // Hide if expired (after February 5, 2026 11:59 PM)
-    if (isExpired) {
-      setIsVisible(false)
+  const syncBannerOffset = (visible: boolean) => {
+    if (visible) {
+      document.body.setAttribute('data-banner-visible', 'true')
+      document.documentElement.style.setProperty('--banner-height', '50px')
+    } else {
       document.body.removeAttribute('data-banner-visible')
       document.documentElement.style.setProperty('--banner-height', '0px')
-      return
     }
-
-    // Check localStorage for dismissal
-    const dismissed = localStorage.getItem(STORAGE_KEY)
-    if (dismissed === 'true') {
-      setIsDismissed(true)
-      setIsVisible(false)
-      document.body.removeAttribute('data-banner-visible')
-      document.documentElement.style.setProperty('--banner-height', '0px')
-      return
-    }
-
-    // Show banner until expiry date
-    setIsVisible(true)
-    setIsDismissed(false)
-    document.body.setAttribute('data-banner-visible', 'true')
-    document.documentElement.style.setProperty('--banner-height', '50px')
   }
 
   useEffect(() => {
-    // Check immediately
-    checkVisibility()
-
-    // Set up interval to check every minute (to catch midnight transition)
-    const interval = setInterval(checkVisibility, 60000) // Check every minute
-
-    // Cleanup on unmount
-    return () => {
-      clearInterval(interval)
-      document.body.removeAttribute('data-banner-visible')
-      document.documentElement.style.setProperty('--banner-height', '0px')
+    if (pathname.startsWith('/admin')) {
+      setAnnouncement(null)
+      setIsVisible(false)
+      setIsDismissed(false)
+      syncBannerOffset(false)
+      return
     }
-  }, [])
+
+    let active = true
+
+    const loadAnnouncement = async () => {
+      try {
+        const res = await fetch('/api/announcement', { cache: 'no-store' })
+        if (!res.ok) return
+        const data = await res.json()
+        if (!active) return
+        setAnnouncement((data.announcement || null) as LiveAnnouncement | null)
+      } catch {
+        // Keep layout stable if announcements fail to load.
+      }
+    }
+
+    loadAnnouncement()
+    const interval = setInterval(loadAnnouncement, 60000)
+
+    return () => {
+      active = false
+      clearInterval(interval)
+      syncBannerOffset(false)
+    }
+  }, [pathname])
+
+  useEffect(() => {
+    if (!announcement) {
+      setIsDismissed(false)
+      setIsVisible(false)
+      syncBannerOffset(false)
+      return
+    }
+
+    const dismissalKey = `announcement-banner-dismissed-${announcement.id}`
+    const dismissed = localStorage.getItem(dismissalKey)
+    if (dismissed === 'true') {
+      setIsDismissed(true)
+      setIsVisible(false)
+      syncBannerOffset(false)
+      return
+    }
+
+    setIsDismissed(false)
+    setIsVisible(true)
+    syncBannerOffset(true)
+  }, [announcement])
 
   const handleDismiss = () => {
+    if (!announcement) return
+    const dismissalKey = `announcement-banner-dismissed-${announcement.id}`
     setIsVisible(false)
     setIsDismissed(true)
-    localStorage.setItem(STORAGE_KEY, 'true')
-    document.body.removeAttribute('data-banner-visible')
-    document.documentElement.style.setProperty('--banner-height', '0px')
+    localStorage.setItem(dismissalKey, 'true')
+    syncBannerOffset(false)
   }
 
-  if (!isVisible || isDismissed) {
+  if (pathname.startsWith('/admin') || !isVisible || isDismissed || !announcement) {
     return null
   }
 
@@ -80,7 +108,7 @@ export function AnnouncementBanner() {
       <div className="container-custom relative w-full h-full flex items-center justify-center px-4">
         {/* Message */}
         <p className="text-sm md:text-base font-medium text-center px-8 md:px-12">
-          Due to inclement weather, please call to check our hours.
+          {announcement.message}
         </p>
 
         {/* Close Button */}

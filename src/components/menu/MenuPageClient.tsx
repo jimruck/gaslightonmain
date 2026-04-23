@@ -27,7 +27,7 @@ export function MenuPageClient() {
   const [sections, setSections] = useState<MenuSectionData[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [selectedMeal, setSelectedMeal] = useState<string>('Dinner')
+  const [selectedMeal, setSelectedMeal] = useState<string>('Brunch')
   const [allItems, setAllItems] = useState<MenuItem[]>([])
 
   // Load menu data once on mount
@@ -83,12 +83,7 @@ export function MenuPageClient() {
     }, {} as Record<string, MenuItem[]>)
     
     // Define the fixed order for menu sections
-    const sectionOrder = [
-      'Appetizers & Small Plates',
-      'Salads & Soups', 
-      'Main Courses',
-      'Desserts'
-    ]
+    const sectionOrder = ['Appetizers and Small Plates', 'Main Courses', 'Desserts']
     
     // Convert sections object to array in the specified order
     let sectionsArray = sectionOrder
@@ -98,27 +93,6 @@ export function MenuPageClient() {
         title: course,
         items: sectionsByCourse[course]
       }))
-    
-    // If no items match the selected meal, show all items (fallback)
-    if (sectionsArray.length === 0 && allItems.length > 0) {
-      console.warn(`No items found for meal "${selectedMeal}". Showing all items as fallback.`)
-      const allSectionsByCourse = allItems.reduce((acc: Record<string, MenuItem[]>, item: MenuItem) => {
-        const course = item.course || 'Other'
-        if (!acc[course]) {
-          acc[course] = []
-        }
-        acc[course].push(item)
-        return acc
-      }, {} as Record<string, MenuItem[]>)
-      
-      sectionsArray = sectionOrder
-        .filter(course => allSectionsByCourse[course] && allSectionsByCourse[course].length > 0)
-        .map(course => ({
-          id: course.toLowerCase().replace(/\s+/g, '-'),
-          title: course,
-          items: allSectionsByCourse[course]
-        }))
-    }
     
     setSections(sectionsArray)
   }, [selectedMeal, allItems])
@@ -153,14 +127,6 @@ export function MenuPageClient() {
     )
   }
 
-  if (!sections.length) {
-    return (
-      <div className="container-custom py-12">
-        <div className="text-center" style={{ color: '#f2f2f2' }}>Menu coming soon. Please check back later.</div>
-      </div>
-    )
-  }
-
   return (
     <div>
       <MenuHero />
@@ -175,9 +141,13 @@ export function MenuPageClient() {
       
       <div className="container-custom py-12">
         <div className="max-w-4xl mx-auto space-y-16">
-          {sections.map((section) => (
-            <MenuSection key={section.id} section={section} />
-          ))}
+          {sections.length > 0 ? (
+            sections.map((section) => <MenuSection key={section.id} section={section} />)
+          ) : (
+            <div className="text-center" style={{ color: '#f2f2f2' }}>
+              No items are currently listed for {selectedMeal}. Please choose another meal tab.
+            </div>
+          )}
         </div>
       </div>
     </div>

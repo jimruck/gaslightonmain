@@ -1,122 +1,43 @@
+import { unstable_cache } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
+import type { ApiMenuItem } from '@/lib/cms/types'
+import { serializeMenuItemForApi } from '@/lib/cms/serializers'
+import { getPublicMenuItemsFromDb } from '@/lib/db/cmsRepository'
+import { isSupabaseServerConfigured } from '@/lib/supabase/env'
 
-// Cache this route for 4 hours (14400 seconds) to reduce Airtable API calls
-// This results in ~360 calls/month (2 routes x 6 calls/day x 30 days)
-export const revalidate = 14400
+const REVALIDATE_SECONDS = 14400
 
-type AirtableRecord = {
-  id: string
-  fields: Record<string, unknown>
-}
+// Cache this route for 4 hours (14400 seconds) to keep calls stable.
+export const revalidate = REVALIDATE_SECONDS
 
-type MenuItem = {
-  id: string
-  name: string
-  description: string
-  price: string
-  tags: string[]
-  course: string
-  meal?: string[]
-  photo?: string
-  featured?: boolean
-}
+const CACHE_CONTROL_HEADER = `public, s-maxage=${REVALIDATE_SECONDS}, stale-while-revalidate=60`
 
-const AIRTABLE_API_URL = 'https://api.airtable.com/v0'
-
-function getEnv(name: string): string {
-  const value = process.env[name]
-  if (!value) {
-    throw new Error(`Missing required environment variable: ${name}`)
-  }
-  return value.trim()
-}
-
-function normalizeRecord(record: AirtableRecord): MenuItem {
-  const f = record.fields as Record<string, any>
-  
-  // Map to your actual Airtable columns
-  const name: string = f['Item Name'] || f.name || ''
-  const description: string = f['Description'] || f.description || ''
-  const course: string = f['Course'] || f.course || ''
-  // Handle meal - could be string or array (multi-select)
-  // Try multiple possible field names
-  const rawMeal = f['Meal'] || f['Meal Type'] || f['Meal Time'] || f['Service'] || f.meal || ''
-  const meal: string[] = Array.isArray(rawMeal) 
-    ? rawMeal.map((m: any) => typeof m === 'string' ? m.trim() : String(m).trim()).filter(Boolean)
-    : typeof rawMeal === 'string' && rawMeal.trim()
-      ? [rawMeal.trim()]
-      : []
-  const priceValue: number | string | undefined = f['Price'] ?? f.Price ?? undefined
-  const photo = Array.isArray(f['Photo']) ? f['Photo'][0] : undefined
-  
-  // Handle tags - could be array or string
-  const rawTags = f['Tags'] || f.tags || []
-  const tags: string[] = Array.isArray(rawTags) 
-    ? rawTags 
-    : typeof rawTags === 'string' 
-      ? rawTags.split(',').map(t => t.trim()).filter(Boolean)
-      : []
-  
-  const price: string = typeof priceValue === 'number' 
-    ? `$${priceValue}` 
-    : typeof priceValue === 'string' 
-      ? priceValue 
-      : ''
-  
-  // Determine if featured based on tags
-  const featured = tags.includes('Featured')
-  
-  return {
-    id: record.id,
-    name,
-    description,
-    price,
-    tags,
-    course,
-    meal,
-    photo: photo?.thumbnails?.large?.url || photo?.thumbnails?.full?.url || photo?.url || undefined,
-    featured,
-  }
-}
+const getCachedMenuItems = unstable_cache(
+  async () => {
+    const rows = await getPublicMenuItemsFromDb()
+    const items = rows.map(serializeMenuItemForApi)
+    return { rows, items }
+  },
+  ['cms-menu'],
+  { revalidate: REVALIDATE_SECONDS }
+)
 
 export async function GET(request: NextRequest) {
+  if (!isSupabaseServerConfigured()) {
+    const { searchParams } = new URL(request.url)
+    const featured = searchParams.get('featured') === '1'
+    const empty = featured
+      ? { items: [] as ApiMenuItem[] }
+      : { sections: {} as Record<string, ApiMenuItem[]>, items: [] as ApiMenuItem[] }
+    return NextResponse.json(empty, {
+      status: 200,
+      headers: { 'Cache-Control': 'no-store', 'X-CMS-Backend': 'unconfigured' },
+    })
+  }
+
   try {
-    const baseId = getEnv('AIRTABLE_BASE_ID')
-    const tableName = getEnv('AIRTABLE_MENU_TABLE')
-    const apiKey = getEnv('AIRTABLE_API_KEY')
+    const { rows, items } = await getCachedMenuItems()
 
-    const url = new URL(`${AIRTABLE_API_URL}/${baseId}/${encodeURIComponent(tableName)}`)
-    
-    // Optional Airtable-side sort if configured
-    const sortField = process.env.AIRTABLE_SORT_FIELD
-    if (sortField) {
-      url.searchParams.set('sort[0][field]', sortField)
-      url.searchParams.set('sort[0][direction]', 'asc')
-    }
-
-    // Revalidate periodically on the server to keep data fresh
-    const fetchOptions: RequestInit & { next?: { revalidate: number } } = {
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      next: { revalidate: 14400 },
-    }
-
-    const res = await fetch(url.toString(), fetchOptions)
-
-    if (!res.ok) {
-      const text = await res.text()
-      return NextResponse.json(
-        { error: 'Failed to fetch Airtable', details: text },
-        { status: res.status }
-      )
-    }
-
-    const json = (await res.json()) as { records: AirtableRecord[] }
-    const items = (json.records || []).map(normalizeRecord)
-
-    // Group by course
     const sections = items.reduce((acc, item) => {
       const course = item.course || 'Other'
       if (!acc[course]) {
@@ -124,30 +45,29 @@ export async function GET(request: NextRequest) {
       }
       acc[course].push(item)
       return acc
-    }, {} as Record<string, MenuItem[]>)
+    }, {} as Record<string, ApiMenuItem[]>)
 
     const { searchParams } = new URL(request.url)
-    const debug = searchParams.get('debug') === '1'
+    const debug = process.env.NODE_ENV !== 'production' && searchParams.get('debug') === '1'
     const featured = searchParams.get('featured') === '1'
-    
+
     if (featured) {
-      // Return only featured items for home page
-      const featuredItems = items.filter(item => item.featured)
+      const featuredItems = items.filter((item) => item.featured)
       return NextResponse.json(
-        debug ? { items: featuredItems, raw: json.records } : { items: featuredItems },
-        { status: 200 }
+        debug ? { items: featuredItems, raw: rows } : { items: featuredItems },
+        { status: 200, headers: { 'Cache-Control': CACHE_CONTROL_HEADER } }
       )
     }
 
     return NextResponse.json(
-      debug ? { sections, items, raw: json.records } : { sections, items },
-      { status: 200 }
+      debug ? { sections, items, raw: rows } : { sections, items },
+      { status: 200, headers: { 'Cache-Control': CACHE_CONTROL_HEADER } }
     )
-
   } catch (error: any) {
-    console.error('Menu API error:', error)
+    console.error('Menu API error:', error?.message || error)
+    const details = process.env.NODE_ENV === 'development' ? error?.message : undefined
     return NextResponse.json(
-      { error: 'Internal server error', details: error?.message },
+      { error: 'Internal server error', details },
       { status: 500 }
     )
   }
