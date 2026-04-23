@@ -1,8 +1,72 @@
 'use client'
 
+import Link from 'next/link'
+import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 
+type ReservationEventItem = {
+  id: string
+  title: string
+  start_at?: string | null
+  date: string
+  time?: string
+  status?: string
+}
+
 export function OpenTableWidget() {
+  const [events, setEvents] = useState<ReservationEventItem[]>([])
+
+  useEffect(() => {
+    let active = true
+
+    async function loadEvents() {
+      try {
+        const res = await fetch('/api/events', { cache: 'default' })
+        if (!res.ok) return
+        const data = await res.json()
+        if (!active) return
+        setEvents((data.events || []) as ReservationEventItem[])
+      } catch {
+        // Keep reservations flow smooth if events fail to load.
+      }
+    }
+
+    loadEvents()
+    return () => {
+      active = false
+    }
+  }, [])
+
+  const upcomingEvents = useMemo(() => {
+    const now = Date.now()
+    const fourteenDaysFromNow = now + 14 * 24 * 60 * 60 * 1000
+
+    return events
+      .filter((event) => {
+        const rawStart = event.start_at
+        if (!rawStart) return false
+        const eventMs = Date.parse(rawStart)
+        if (!Number.isFinite(eventMs)) return false
+        return eventMs >= now && eventMs <= fourteenDaysFromNow
+      })
+      .sort((a, b) => Date.parse(a.start_at || '') - Date.parse(b.start_at || ''))
+      .slice(0, 2)
+  }, [events])
+
+  const hiddenEventCount = useMemo(() => {
+    const now = Date.now()
+    const fourteenDaysFromNow = now + 14 * 24 * 60 * 60 * 1000
+    const totalUpcomingWithin14 = events.filter((event) => {
+      const rawStart = event.start_at
+      if (!rawStart) return false
+      const eventMs = Date.parse(rawStart)
+      if (!Number.isFinite(eventMs)) return false
+      return eventMs >= now && eventMs <= fourteenDaysFromNow
+    }).length
+
+    return Math.max(totalUpcomingWithin14 - 2, 0)
+  }, [events])
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -19,6 +83,32 @@ export function OpenTableWidget() {
           Reserve your table online through OpenTable for instant confirmation.
         </p>
       </div>
+
+      {upcomingEvents.length > 0 && (
+        <div
+          className="mb-5 rounded-lg px-4 py-3 text-left"
+          style={{ backgroundColor: '#fff8eb', border: '1px solid #e9dfca' }}
+        >
+          <p className="text-sm font-semibold mb-1" style={{ color: '#171717' }}>
+            Upcoming at The Gaslight
+          </p>
+          <ul className="space-y-1">
+            {upcomingEvents.map((event) => (
+              <li key={event.id} className="text-sm" style={{ color: '#171717' }}>
+                <span className="font-medium">{event.title}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-2 text-xs" style={{ color: '#4a4a4a' }}>
+            Some event dates may have a featured dining format.
+            {' '}
+            <Link href="/events" className="underline" style={{ color: '#835F3A' }}>
+              View event details
+            </Link>
+            {hiddenEventCount > 0 ? ` (+${hiddenEventCount} more)` : ''}.
+          </p>
+        </div>
+      )}
 
       {/* OpenTable Widget - Vertically centered with equal padding */}
       <div className="flex justify-center w-full py-6">

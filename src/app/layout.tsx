@@ -1,11 +1,14 @@
 import type { Metadata } from 'next'
 import { Inter, Playfair_Display } from 'next/font/google'
+import Script from 'next/script'
 import '@/styles/globals.css'
 import { AnnouncementBanner } from '@/components/layout/AnnouncementBanner'
 import { Navigation } from '@/components/layout/Navigation'
 import { MobileBottomBar } from '@/components/layout/MobileBottomBar'
 import { Footer } from '@/components/layout/Footer'
 import { StructuredData } from '@/components/seo/StructuredData'
+
+const GA_MEASUREMENT_ID = 'G-9DMZ33Y81K'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -77,6 +80,18 @@ export default function RootLayout({
         <meta name="theme-color" content="#171717" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <StructuredData type="restaurant" />
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}');
+          `}
+        </Script>
       </head>
       <body className="min-h-screen bg-gray-dark w-full">
         <AnnouncementBanner />
