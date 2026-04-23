@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server'
 import { getLatestActiveAnnouncementFromDb } from '@/lib/db/announcementRepository'
 import { isSupabaseServerConfigured } from '@/lib/supabase/env'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export async function GET() {
   if (!isSupabaseServerConfigured()) {
     return NextResponse.json(
