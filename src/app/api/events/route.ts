@@ -10,7 +10,7 @@ const REVALIDATE_SECONDS = 14400
 // Cache this route for 4 hours (14400 seconds) to keep calls stable.
 export const revalidate = REVALIDATE_SECONDS
 
-const CACHE_CONTROL_HEADER = `public, s-maxage=${REVALIDATE_SECONDS}, stale-while-revalidate=60`
+const CACHE_CONTROL_HEADER = 'no-store'
 
 const getCachedEvents = unstable_cache(
   async () => {
