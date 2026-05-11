@@ -35,11 +35,17 @@ export function AnnouncementBanner() {
       return
     }
 
+    // If user dismissed it, avoid polling entirely.
+    if (isDismissed) {
+      syncBannerOffset(false)
+      return
+    }
+
     let active = true
 
     const loadAnnouncement = async () => {
       try {
-        const res = await fetch('/api/announcement', { cache: 'no-store' })
+        const res = await fetch('/api/announcement', { cache: 'default' })
         if (!res.ok) return
         const data = await res.json()
         if (!active) return
@@ -50,14 +56,15 @@ export function AnnouncementBanner() {
     }
 
     loadAnnouncement()
-    const interval = setInterval(loadAnnouncement, 60000)
+    // Poll less frequently to reduce Supabase reads and Vercel egress.
+    const interval = setInterval(loadAnnouncement, 300000) // 5 minutes
 
     return () => {
       active = false
       clearInterval(interval)
       syncBannerOffset(false)
     }
-  }, [pathname])
+  }, [pathname, isDismissed])
 
   useEffect(() => {
     if (!announcement) {

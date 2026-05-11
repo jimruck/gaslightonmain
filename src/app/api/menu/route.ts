@@ -11,7 +11,8 @@ const REVALIDATE_SECONDS = 14400
 // Cache this route for 4 hours (14400 seconds) to keep calls stable.
 export const revalidate = REVALIDATE_SECONDS
 
-const CACHE_CONTROL_HEADER = 'no-store'
+const CACHE_CONTROL_HEADER = `public, s-maxage=${REVALIDATE_SECONDS}, stale-while-revalidate=${REVALIDATE_SECONDS}, max-age=0`
+const CACHE_CONTROL_NO_STORE = 'no-store'
 
 const getCachedMenuItems = unstable_cache(
   async () => {
@@ -25,8 +26,7 @@ const getCachedMenuItems = unstable_cache(
 
 export async function GET(request: NextRequest) {
   if (!isSupabaseServerConfigured()) {
-    const { searchParams } = new URL(request.url)
-    const featured = searchParams.get('featured') === '1'
+    const featured = request.nextUrl.searchParams.get('featured') === '1'
     const empty = featured
       ? { items: [] as ApiMenuItem[] }
       : { sections: {} as Record<string, ApiMenuItem[]>, items: [] as ApiMenuItem[] }
@@ -48,21 +48,20 @@ export async function GET(request: NextRequest) {
       return acc
     }, {} as Record<string, ApiMenuItem[]>)
 
-    const { searchParams } = new URL(request.url)
-    const debug = process.env.NODE_ENV !== 'production' && searchParams.get('debug') === '1'
-    const featured = searchParams.get('featured') === '1'
+    const debug = process.env.NODE_ENV !== 'production' && request.nextUrl.searchParams.get('debug') === '1'
+    const featured = request.nextUrl.searchParams.get('featured') === '1'
 
     if (featured) {
       const featuredItems = items.filter((item) => item.featured)
       return NextResponse.json(
         debug ? { items: featuredItems, raw: rows } : { items: featuredItems },
-        { status: 200, headers: { 'Cache-Control': CACHE_CONTROL_HEADER } }
+        { status: 200, headers: { 'Cache-Control': debug ? CACHE_CONTROL_NO_STORE : CACHE_CONTROL_HEADER } }
       )
     }
 
     return NextResponse.json(
       debug ? { sections, items, raw: rows } : { sections, items },
-      { status: 200, headers: { 'Cache-Control': CACHE_CONTROL_HEADER } }
+      { status: 200, headers: { 'Cache-Control': debug ? CACHE_CONTROL_NO_STORE : CACHE_CONTROL_HEADER } }
     )
   } catch (error: any) {
     console.error('Menu API error:', error?.message || error)

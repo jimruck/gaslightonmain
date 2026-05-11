@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { useState, useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export function Hero() {
   const [statusInfo, setStatusInfo] = useState({
@@ -11,6 +11,8 @@ export function Hero() {
     status: 'Closed',
     nextOpen: 'Opens today at 4:00 PM'
   })
+
+  const videoRef = useRef<HTMLVideoElement | null>(null)
 
   useEffect(() => {
     const updateStatus = () => {
@@ -123,10 +125,61 @@ export function Hero() {
     const interval = setInterval(updateStatus, 60000) // Update every minute
     return () => clearInterval(interval)
   }, [])
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    // Pause when offscreen to reduce background bandwidth.
+    // When it becomes visible again, reset to 0 so it "replays".
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const shouldPlay = entry?.isIntersecting ?? false
+        if (!shouldPlay) {
+          try {
+            video.pause()
+            video.currentTime = 0
+          } catch {
+            // no-op
+          }
+          return
+        }
+
+        // Ensure the "replay" behavior on re-visibility.
+        try {
+          video.currentTime = 0
+        } catch {
+          // no-op
+        }
+
+        const playPromise = video.play()
+        if (playPromise) {
+          playPromise.catch(() => {
+            // Autoplay might fail if the browser changes policy;
+            // the video tag already has muted autoplay settings.
+          })
+        }
+      },
+      { threshold: 0.25 }
+    )
+
+    observer.observe(video)
+
+    // Best-effort initial play (in case IntersectionObserver fires late).
+    const playPromise = video.play()
+    if (playPromise) {
+      playPromise.catch(() => {
+        // no-op
+      })
+    }
+
+    return () => observer.disconnect()
+  }, [])
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0">
       <video
+          ref={videoRef}
           autoPlay
           loop
           muted

@@ -10,7 +10,8 @@ const REVALIDATE_SECONDS = 14400
 // Cache this route for 4 hours (14400 seconds) to keep calls stable.
 export const revalidate = REVALIDATE_SECONDS
 
-const CACHE_CONTROL_HEADER = 'no-store'
+const CACHE_CONTROL_HEADER = `public, s-maxage=${REVALIDATE_SECONDS}, stale-while-revalidate=${REVALIDATE_SECONDS}, max-age=0`
+const CACHE_CONTROL_NO_STORE = 'no-store'
 
 const getCachedEvents = unstable_cache(
   async () => {
@@ -33,11 +34,10 @@ export async function GET(request: NextRequest) {
   try {
     const { items, rows } = await getCachedEvents()
 
-    const { searchParams } = new URL(request.url)
-    const debug = process.env.NODE_ENV !== 'production' && searchParams.get('debug') === '1'
+    const debug = process.env.NODE_ENV !== 'production' && request.nextUrl.searchParams.get('debug') === '1'
     return NextResponse.json(
       debug ? { events: items, raw: rows } : { events: items },
-      { status: 200, headers: { 'Cache-Control': CACHE_CONTROL_HEADER } }
+      { status: 200, headers: { 'Cache-Control': debug ? CACHE_CONTROL_NO_STORE : CACHE_CONTROL_HEADER } }
     )
   } catch (error: any) {
     console.error('Events API error:', error?.message || error)
