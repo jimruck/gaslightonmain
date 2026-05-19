@@ -56,8 +56,8 @@ export function AnnouncementBanner() {
     }
 
     loadAnnouncement()
-    // Poll less frequently to reduce Supabase reads and Vercel egress.
-    const interval = setInterval(loadAnnouncement, 300000) // 5 minutes
+    // Poll infrequently; CDN + revalidateTag on admin saves keep data fresh.
+    const interval = setInterval(loadAnnouncement, 1800000) // 30 minutes
 
     return () => {
       active = false

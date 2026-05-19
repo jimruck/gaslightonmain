@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidateTag } from 'next/cache'
 import { z } from 'zod'
+import { CMS_ANNOUNCEMENT_CACHE_TAG } from '@/lib/cms/cacheTags'
 import { requireAdminApiSession } from '@/lib/auth/adminApi'
 import {
   deleteAnnouncementFromDb,
@@ -42,6 +44,7 @@ export async function POST(request: NextRequest) {
       )
     }
     await upsertAnnouncementInDb(parsed)
+    revalidateTag(CMS_ANNOUNCEMENT_CACHE_TAG)
     return NextResponse.json({ ok: true })
   } catch (error: any) {
     if (error instanceof z.ZodError) {
@@ -63,6 +66,7 @@ export async function DELETE(request: NextRequest) {
 
   try {
     await deleteAnnouncementFromDb(id)
+    revalidateTag(CMS_ANNOUNCEMENT_CACHE_TAG)
     return NextResponse.json({ ok: true })
   } catch (error: any) {
     console.error('Admin announcement DELETE error:', error)

@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start --port 3000",
     "lint": "next lint",
-    "cms:sync-admin": "tsx scripts/sync-admin-allowlist.ts"
+    "cms:sync-admin": "tsx scripts/sync-admin-allowlist.ts",
+    "cms:storage-cache-headers": "tsx scripts/update-storage-cache-headers.ts",
+    "cms:storage-migrate-report": "tsx scripts/migrate-storage-off-supabase.ts"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.19",

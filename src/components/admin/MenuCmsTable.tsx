@@ -3,6 +3,10 @@
 import { useEffect, useState } from 'react'
 import type { CmsMenuRow } from '@/lib/cms/types'
 import { createSupabaseBrowserClient } from '@/lib/supabase/browser'
+import {
+  STORAGE_UPLOAD_CACHE_CONTROL,
+  compressImageForUpload,
+} from '@/lib/images/compressImage'
 
 type EditableMenuRow = CmsMenuRow & {
   rowKey: string
@@ -152,13 +156,17 @@ export function MenuCmsTable() {
 
     try {
       const supabase = createSupabaseBrowserClient()
-      const extension = file.name.split('.').pop()?.toLowerCase() || 'jpg'
+      const compressed = await compressImageForUpload(file)
       const safeItemName = slugify(row.item_name || 'menu-item')
-      const filePath = `menu/${safeItemName}-${Date.now()}-${crypto.randomUUID()}.${extension}`
+      const filePath = `menu/${safeItemName}-${Date.now()}-${crypto.randomUUID()}.webp`
 
       const { error: uploadError } = await supabase.storage
         .from(MENU_IMAGE_BUCKET)
-        .upload(filePath, file, { cacheControl: '3600', upsert: false, contentType: file.type || undefined })
+        .upload(filePath, compressed, {
+          cacheControl: STORAGE_UPLOAD_CACHE_CONTROL,
+          upsert: false,
+          contentType: 'image/webp',
+        })
 
       if (uploadError) {
         throw new Error(uploadError.message)

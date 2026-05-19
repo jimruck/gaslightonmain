@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
+import { CmsImage } from '@/components/shared/CmsImage'
 import { Calendar, Clock, Users } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
@@ -86,13 +86,11 @@ export function EventsList() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
             <div className="relative h-64 lg:h-auto">
               {event.image ? (
-                <Image
+                <CmsImage
                   src={event.image}
                   alt={event.title}
-                  fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  unoptimized
                 />
               ) : (
                 <div className="w-full h-full bg-gray-600" />

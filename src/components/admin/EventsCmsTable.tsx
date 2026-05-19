@@ -3,6 +3,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { CmsEventRow } from '@/lib/cms/types'
 import { createSupabaseBrowserClient } from '@/lib/supabase/browser'
+import {
+  STORAGE_UPLOAD_CACHE_CONTROL,
+  compressImageForUpload,
+} from '@/lib/images/compressImage'
 
 type EditableEventRow = CmsEventRow & {
   localId: string
@@ -144,13 +148,17 @@ export function EventsCmsTable() {
 
     try {
       const supabase = createSupabaseBrowserClient()
-      const extension = file.name.split('.').pop()?.toLowerCase() || 'jpg'
+      const compressed = await compressImageForUpload(file)
       const safeTitle = slugify(row.title || 'event')
-      const filePath = `events/${safeTitle}-${Date.now()}-${crypto.randomUUID()}.${extension}`
+      const filePath = `events/${safeTitle}-${Date.now()}-${crypto.randomUUID()}.webp`
 
       const { error: uploadError } = await supabase.storage
         .from(EVENT_IMAGE_BUCKET)
-        .upload(filePath, file, { cacheControl: '3600', upsert: false, contentType: file.type || undefined })
+        .upload(filePath, compressed, {
+          cacheControl: STORAGE_UPLOAD_CACHE_CONTROL,
+          upsert: false,
+          contentType: 'image/webp',
+        })
 
       if (uploadError) {
         throw new Error(uploadError.message)

@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { CmsImage } from '@/components/shared/CmsImage'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
@@ -117,13 +118,11 @@ export function FeaturedDishes() {
               <div className="bg-gray-medium rounded-lg overflow-hidden">
                 <div className="relative h-64 overflow-hidden">
                   {dish.photo ? (
-                    <Image
+                    <CmsImage
                       src={dish.photo}
                       alt={dish.name}
-                      fill
                       className="object-cover"
                       sizes="(max-width: 768px) 100vw, 50vw"
-                      unoptimized
                     />
                   ) : (
                     <div className="w-full h-full bg-gray-600 flex items-center justify-center text-white">

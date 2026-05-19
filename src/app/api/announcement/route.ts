@@ -4,7 +4,7 @@ import { getLatestActiveAnnouncementFromDb } from '@/lib/db/announcementReposito
 import { isSupabaseServerConfigured } from '@/lib/supabase/env'
 import { CMS_ANNOUNCEMENT_CACHE_TAG } from '@/lib/cms/cacheTags'
 
-const REVALIDATE_SECONDS = 300 // 5 minutes
+const REVALIDATE_SECONDS = 3600 // 1 hour — announcements change rarely
 export const revalidate = REVALIDATE_SECONDS
 const getCachedAnnouncement = unstable_cache(
   async () => {

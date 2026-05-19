@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
+import { CmsImage } from '@/components/shared/CmsImage'
 import { Calendar, Clock, Users } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
@@ -100,13 +100,12 @@ export function NextEvent() {
           >
             <div className="relative h-96 lg:h-[500px] rounded-lg overflow-hidden shadow-lg">
               {nextEvent.image ? (
-                <Image
+                <CmsImage
                   src={nextEvent.image}
                   alt={nextEvent.title}
-                  fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  unoptimized
+                  priority
                 />
               ) : (
                 <div className="w-full h-full bg-gray-600 flex items-center justify-center text-white">

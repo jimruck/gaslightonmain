@@ -1,25 +1,47 @@
 /** @type {import('next').NextConfig} */
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim()
+let supabaseHostname = null
+if (supabaseUrl) {
+  try {
+    supabaseHostname = new URL(supabaseUrl).hostname
+  } catch {
+    // ignore invalid URL at build time
+  }
+}
+
+const remotePatterns = [
+  {
+    protocol: 'https',
+    hostname: 'images.unsplash.com',
+    port: '',
+    pathname: '/**',
+  },
+  {
+    protocol: 'http',
+    hostname: 'localhost',
+    port: '',
+    pathname: '/**',
+  },
+]
+
+if (supabaseHostname) {
+  remotePatterns.push({
+    protocol: 'https',
+    hostname: supabaseHostname,
+    port: '',
+    pathname: '/storage/v1/object/public/**',
+  })
+}
+
 const nextConfig = {
-  // Ensure development server runs on port 3000
   devIndicators: {
     buildActivity: true,
   },
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '',
-        pathname: '/**',
-      },
-    ],
-    formats: ['image/webp'], // Removed AVIF to reduce transformations by 50%
+    remotePatterns,
+    formats: ['image/webp'],
+    minimumCacheTTL: 86400,
   },
   async headers() {
     return [
